@@ -1,0 +1,8 @@
+Just a simple dungeon maker.
+
+Features:
+	Rectangular non-overlapping rooms.
+	Rooms linked with corridors.
+	Each room has (at least) two exits.
+	One pair of stairs per level (Up and Down).
+	
