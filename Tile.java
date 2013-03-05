@@ -1,4 +1,4 @@
-package Retardliek;
+//package Retardliek;
 
 import java.util.ArrayList;
 
@@ -14,6 +14,7 @@ public class Tile{
 	private ArrayList<Object> thingsOnTile; 
 	private int distStairsUp;
 	private int distStairsDown;
+	private char symbol;
 
 	public Tile(){
 		this.isExplored = false;
@@ -21,6 +22,7 @@ public class Tile{
 		this.thingsOnTile = new ArrayList<Object>();
 		this.distStairsDown = 0;
 		this.distStairsUp = 0;
+		this.symbol = 'X';
 	}
 
 	public boolean getIsExplored(){
@@ -29,6 +31,14 @@ public class Tile{
 
 	public void setExplored(boolean value){
 		this.isExplored = value;
+	}
+
+	public char getSymbol(){
+		return this.symbol;
+	}
+
+	public void setSymbol(char givenSymbol){
+		this.symbol=givenSymbol;
 	}
 
 	public boolean getIsOnView(){

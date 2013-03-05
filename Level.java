@@ -1,4 +1,4 @@
-package Retardliek;
+//package Retardliek;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,12 +6,33 @@ import java.util.Random;
 public class Level{
 
 	private Tile[][] grid; 
-	private static int gridHeight = 80;
-	private static int gridWidth  = 25;
+	private int gridHeight;
+	private int gridWidth;
 	private ArrayList<Tile> validTiles = new ArrayList<Tile>();
 
 	public Level(){
+		this.gridHeight = 80;
+		this.gridWidth = 25;
 		this.grid = new Tile[gridHeight][gridWidth];
+		 for(int i=0;i<80;i++){
+		 	for(int j=0;j<25;j++){
+		 		this.grid[i][j] = new Tile();
+		 	}
+		 }
+	}
+
+	// TODO: Return en caso de caldeiro?
+	//		 Exception?
+	public Tile getTile(int indexX, int indexY){
+		Tile toReturn = new Tile();
+		if(indexX>=0 && indexX<this.gridHeight &&
+			indexY>=0 && indexY<this.gridWidth){
+				return this.grid[indexX][indexY];
+		}
+		else{
+			System.out.println("ERROR: Requesting invalid tile.");
+			return null;
+		}
 	}
 
 	// Returns a valid tile (allegedly)
@@ -34,6 +55,14 @@ public class Level{
 	public void setStairsDown(){
 		Tile stairsDown = this.getValidTile(this);
 		stairsDown.setDistStairsUp(0);
+	}
+
+	public int getGridHeight(){
+		return this.gridHeight;
+	}
+
+	public int getGridWidth(){
+		return this.gridWidth;
 	}
 
 }
