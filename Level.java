@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+/*
+*	TODO:
+*		getTile();
+*/
+
 public class Level{
 
 	private Tile[][] grid; 
@@ -21,10 +26,10 @@ public class Level{
 
 	// TODO: Return en caso de caldeiro?
 	//		 Exception?
-	public Tile getTile(int indexX, int indexY){
+	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
-		if(indexX>=0 && indexX<this.gridHeight &&
-			indexY>=0 && indexY<this.gridWidth){
+		if(0<=p.getX()<=this.gridHeight &&
+			0<=p.getY()<=this.gridHeight &&){
 				return this.grid[indexX][indexY];
 		}
 		else{
@@ -33,8 +38,8 @@ public class Level{
 		}
 	}
 
-	// Returns a valid tile (allegedly)
-	public Tile getValidTile(Level l){
+	// Returns a random valid tile (allegedly)
+	public Tile getRandomValidTile(Level l){
 		Random randomGen = new Random();
 		int indexValidTile = randomGen.nextInt(validTiles.size());
 		Tile tileReturn = validTiles.get(indexValidTile);

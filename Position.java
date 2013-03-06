@@ -1,4 +1,3 @@
-
 public class Position{
 
 	private int i;
@@ -7,6 +6,35 @@ public class Position{
 	public Position(int x, int y){
 		this.i = x;
 		this.j = y;
+	}
+
+	// Only checks map limits
+	public boolean isValidPosition(){
+		if( 0 <= this.getX() <= 79 &&
+			0 <= this.getY() <= 24 ){
+			return true;
+		}
+		return false;
+	}
+
+	public Position getPositionRight(){
+		Position p = new Position(this.getX()+1, this.getY());
+		return p;
+	}	
+
+	public Position getPositionLeft(){
+		Position p = new Position(this.getX()-1, this.getY());
+		return p;
+	}
+	
+	public Position getPositionOver(){
+		Position p = new Position(this.getX(), this.getY()-1);
+		return p;
+	}
+	
+	public Position getPositionUnder(){
+		Position p = new Position(this.getX(), this.getY()+1);
+		return p;
 	}
 
 	public int getX(){

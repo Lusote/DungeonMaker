@@ -1,5 +1,3 @@
-public class Dungeon{
-
 	/* TODO
 	*	GENERAL:
 	*		Save and Load level on change
@@ -9,6 +7,8 @@ public class Dungeon{
 	*		Works for now, but it won't work on game (with manyy levels and such)
 	*
 	*/
+
+	public class Dungeon{
 
 	private static int numOfLevels = 1;
 	private int indexCurrentLevel;

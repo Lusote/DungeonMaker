@@ -15,26 +15,9 @@ public class DungeonPrinter{
 		
 	} 
 
-	// public static void inicializaArray(){
-	// 	int gridHeigth = Level.getGridHeight();
-	// 	int gridWidth  = Level.getGridWidth();
-	// 	for(int i=0;i<gridHeigth;i++){
-	// 		for(int j=0;j<gridWidth;j++){
-	// 			dungeonArray[i][j]='#';
-	// 		}
-	// 	}
-	// }
-
-	// public static void printRandomRoom(){
-	// 	randomHeight= randomGenerator.nextInt(80)-1;
-	// 	randomWidth = randomGenerator.nextInt(25)-1;
-	// 	dungeonArray[randomHeight][randomWidth]='.';
-	// 	System.out.println("Hueco: "+randomHeight+", "+randomWidth);
-	// }
-
 	public static void printRandomRoom(Dungeon dun){
-		randomHeight= randomGenerator.nextInt(79);
-		randomWidth = randomGenerator.nextInt(24);
+		randomHeight= randomGenerator.nextInt(78)+1;
+		randomWidth = randomGenerator.nextInt(23)+1;
 		dun.getCurrentLevel().getTile(randomHeight,randomWidth).setSymbol('.');
 
 		System.out.println("Hueco: "+randomHeight+", "+randomWidth);

@@ -1,5 +1,11 @@
 import java.util.ArrayList;
 
+/*
+*	TODO:
+*		Another constructor, complete, if possible.
+*		Test getNeighbours.
+*/
+
 public class Tile{
 
 	private boolean isExplored;
@@ -19,6 +25,42 @@ public class Tile{
 		this.distStairsUp = 0;
 		this.symbol = 'E';
 		this.pos = null,
+	}
+
+	// UNTESTED
+	// Keep an eye on this
+	public ArrayList<Tile> getNeighbours(Dungeon dun){
+		ArrayList<Tile> n = new ArrayList<Tile>();
+		int i = this.getPosition().getX();
+		int j = this.getPosition().getY();
+		Tile tileToAdd = new Tile();
+		for(int altI = i-1; altI <= i+1 && altI != i ; altI++){
+			for(int altJ = j-1; altJ <= j+1 && altJ != j; altJ++){
+				tileToAdd = dun.getLevel(dun.getCurrentLevel()).getTile(i,j);
+				if(tileToAdd.isValidTile()){
+					System.out.println("Tile.getNeighbours add: ",+altI+" "+altJ);
+					n.add(tileToAdd);					
+				}
+			}
+		}
+		return n;				
+	}
+
+	// Only checks for map limits, it does not care for walls.
+	public boolean isValidTile(){
+		if( 0 <= this.pos.getX() <= 79 &&
+			0 <= this.pos.getY() <= 24 ){
+			return true;
+		}
+		return false;
+	}
+
+	public Position getPosition(){
+		return this.pos;
+	}
+
+	public void setPosition(Position p){
+		this.pos = p;
 	}
 
 	public boolean getIsExplored(){
