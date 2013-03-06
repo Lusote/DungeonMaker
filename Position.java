@@ -17,6 +17,20 @@ public class Position{
 		return false;
 	}
 
+	// Only checks for map limits
+	public boolean isValidPositionForRoom(){
+		boolean bol = ( 1 <= this.getX() 		 &&
+							 this.getX() <= 78  &&
+						1 <= this.getY() 		 && 
+							 this.getY() <= 23);
+		if( bol ){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	public Position getPositionRight(){
 		Position p = new Position(this.getX()+1, this.getY());
 		return p;

@@ -11,9 +11,11 @@ public class Level{
 	private Tile[][] grid; 
 	private int gridHeight;
 	private int gridWidth;
+	private int index;
 	private ArrayList<Tile> validTiles = new ArrayList<Tile>();
 
 	public Level(){
+		this.index = 0;
 		this.gridHeight = 80;
 		this.gridWidth = 25;
 		this.grid = new Tile[gridHeight][gridWidth];
@@ -22,6 +24,34 @@ public class Level{
 		 		this.grid[i][j] = new Tile();
 		 	}
 		 }
+	}
+
+	public void createRoom(Position upLeft, Position downRight){
+		ArrayList<Tile>doors = new ArrayList<Tile>();
+		Room r = new Room(upLeft, downRight, doors, this.getNumLevel());
+		if(r.isValidRoom()){
+			int startX = upLeft.getX();
+			int endX= downRight.getX();
+			int startY = upLeft.getY();
+			int endY = downRight.getY();
+			Tile t;
+			boolean isValidR = r.isValidRoom();
+			for(int i = startX; i<=endX; i++){
+				for(int j=startY; j<=endY; j++){
+					Position p = new Position(i,j);
+					t = this.getTile(p);
+					if(t.isValidTileForRoom()){	
+						t.setSymbol('.');
+					}
+					else{	
+
+					}
+				}
+			}
+		}
+		else {
+		System.out.println("Invalid room.");
+		}
 	}
 
 	// TODO: Return en caso de caldeiro?
@@ -36,6 +66,10 @@ public class Level{
 			System.out.println("ERROR: Requesting invalid tile.");
 			return null;
 		}
+	}
+
+	public int getNumLevel(){
+		return this.index;
 	}
 
 	// Returns a random valid tile (allegedly)

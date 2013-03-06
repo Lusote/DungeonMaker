@@ -29,6 +29,18 @@ public class Tile{
 		this.level = 0;
 	}
 
+	public Tile(boolean explored, boolean view, ArrayList<Object> things,
+				int distDown, int distUp, char symb, Position p, int lev){
+		this.isExplored = explored;
+		this.isOnview = view;
+		this.thingsOnTile = new ArrayList<Object>();
+		this.distStairsDown = distDown;
+		this.distStairsUp = distUp;
+		this.symbol = symb;
+		this.pos = p;
+		this.level = lev;
+	}
+
 	// UNTESTED
 	// Keep an eye on this
 	public ArrayList<Tile> getNeighbours(Dungeon dun){
@@ -50,10 +62,30 @@ public class Tile{
 		return n;				
 	}
 
-	// Only checks for map limits, it does not care for walls.
+	// Only checks for map limits
+	public boolean isValidTileForRoom(){
+		Position p = this.getPosition();
+		System.out.println("Vamos a ver posiciones!!");
+		System.out.println(p.getY());
+		System.out.println(p.getX());
+		System.out.println(p.getY());
+		System.out.println("bieeeen!!");
+		System.out.println("");
+		boolean bol = ( 1 <= p.getX() 		 &&
+							 p.getX() <= 78  &&
+						1 <= p.getY() 		 && 
+							 p.getY() <= 23);
+		if( bol ){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	public boolean isValidTile(){
-		if( 0 <= this.pos.getX() && this.pos.getX() <= 79 &&
-			0 <= this.pos.getY() && this.pos.getY()<= 24 ){
+		if( 0 <= this.getPosition().getX() && this.getPosition().getX() <= 79 &&
+			0 <= this.getPosition().getY() && this.getPosition().getY()<= 24 ){
 			return true;
 		}
 		return false;

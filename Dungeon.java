@@ -16,13 +16,14 @@
 	private Level[] allLevels = new Level[numOfLevels];
 
 	public Dungeon(){
-		this.allLevels[0] = inicializeOneLevel(0);
+		this.allLevels[0] = initializeOneLevel(0);
 		this.indexCurrentLevel = 0;
 		this.currentLevel = allLevels[0];
 	}
 
-	public Level inicializeOneLevel(int index){
-		System.out.println("Dungeon started. WINK.");
+	// Initialize a Level
+	public Level initializeOneLevel(int index){
+		System.out.println("Initializing a level.");
 		Level oneLevel = new Level();
 		int sizeGridX = oneLevel.getGridHeight();
 		int sizeGridY = oneLevel.getGridWidth();
@@ -31,6 +32,7 @@
 			for(int j=0; j<sizeGridY; j++){
 				p = new Position(i,j);
 				oneLevel.getTile(p).setSymbol('#');
+				oneLevel.getTile(p).setPosition(p);
 			}
 		}
 		this.allLevels[index] = oneLevel;

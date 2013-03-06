@@ -18,6 +18,30 @@ public class Room{
 		this.doors = d;
 		this.level = lev;
 	}
+	public Room(Position upLeft, Position downRight, ArrayList<Tile> d, int lev){
+		this.upX = upLeft.getX();
+		this.bottomX = downRight.getX();
+		this.leftY = upLeft.getY();
+		this.rightY = downRight.getY();
+		this.doors = d;
+		this.level = lev;
+	}
+
+	public boolean isValidRoom(){
+		if(!this.getRoomUpperLeft().isValidPositionForRoom()){
+			return false;
+		}
+		if(!this.getRoomUpperRight().isValidPositionForRoom()){
+			return false;
+		}
+		if(!this.getRoomBottonLeft().isValidPositionForRoom()){
+			return false;
+		}
+		if(!this.getRoomBottonRight().isValidPositionForRoom()){
+			return false;
+		}
+		return true;
+	}
 
 	public int getRoomLevel(){
 		return this.level;
