@@ -10,8 +10,8 @@ public class Position{
 
 	// Only checks map limits
 	public boolean isValidPosition(){
-		if( 0 <= this.getX() <= 79 &&
-			0 <= this.getY() <= 24 ){
+		if( 0 <= this.getX() && this.getX() <= 79 &&
+			0 <= this.getY() && this.getY() <= 24 ){
 			return true;
 		}
 		return false;
@@ -38,11 +38,11 @@ public class Position{
 	}
 
 	public int getX(){
-		return this.x;
+		return this.i;
 	}
 
 	public int getY(){
-		return this.y;
+		return this.j;
 	}
 
 	public void setX(int pos){

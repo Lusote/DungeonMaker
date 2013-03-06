@@ -15,6 +15,7 @@ public class Tile{
 	private int distStairsDown;
 	private char symbol;
 	private Position pos;
+	private int level;
 
 	// This needs to be completed
 	public Tile(){
@@ -24,7 +25,8 @@ public class Tile{
 		this.distStairsDown = 0;
 		this.distStairsUp = 0;
 		this.symbol = 'E';
-		this.pos = null,
+		this.pos = null;
+		this.level = 0;
 	}
 
 	// UNTESTED
@@ -34,11 +36,13 @@ public class Tile{
 		int i = this.getPosition().getX();
 		int j = this.getPosition().getY();
 		Tile tileToAdd = new Tile();
+		Position p;
 		for(int altI = i-1; altI <= i+1 && altI != i ; altI++){
 			for(int altJ = j-1; altJ <= j+1 && altJ != j; altJ++){
-				tileToAdd = dun.getLevel(dun.getCurrentLevel()).getTile(i,j);
+				p = new Position(i,j);
+				tileToAdd = dun.getLevel(this.level).getTile(p);
 				if(tileToAdd.isValidTile()){
-					System.out.println("Tile.getNeighbours add: ",+altI+" "+altJ);
+					System.out.println("Tile.getNeighbours add: "+altI+" "+altJ);
 					n.add(tileToAdd);					
 				}
 			}
@@ -48,8 +52,8 @@ public class Tile{
 
 	// Only checks for map limits, it does not care for walls.
 	public boolean isValidTile(){
-		if( 0 <= this.pos.getX() <= 79 &&
-			0 <= this.pos.getY() <= 24 ){
+		if( 0 <= this.pos.getX() && this.pos.getX() <= 79 &&
+			0 <= this.pos.getY() && this.pos.getY()<= 24 ){
 			return true;
 		}
 		return false;

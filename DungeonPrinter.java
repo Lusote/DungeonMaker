@@ -18,7 +18,8 @@ public class DungeonPrinter{
 	public static void printRandomRoom(Dungeon dun){
 		randomHeight= randomGenerator.nextInt(78)+1;
 		randomWidth = randomGenerator.nextInt(23)+1;
-		dun.getCurrentLevel().getTile(randomHeight,randomWidth).setSymbol('.');
+		Position p = new Position(randomHeight,randomWidth);
+		dun.getCurrentLevel().getTile(p).setSymbol('.');
 
 		System.out.println("Hueco: "+randomHeight+", "+randomWidth);
 	}
@@ -28,12 +29,14 @@ public class DungeonPrinter{
 		int dunWidth  = dun.getLevel(lev).getGridWidth();
 		Level levelToPrint = dun.getLevel(lev);
 		char charToPrint = 'Ö';
-		Tile tileToPrint = new Tile();
+		Tile tileToPrint;
+		Position p;
 		 for(int i=0;i<dunHeight;i++){
 		 	for(int j=0;j<dunWidth;j++){
-		 		tileToPrint = levelToPrint.getTile(i,j);
+		 		p = new Position(i,j);
+		 		tileToPrint = levelToPrint.getTile(p);
 		 		charToPrint = tileToPrint.getSymbol();
-		 		csi.print(i,j,charToPrint,CSIColor.WHITE);
+		 		csi.print(p.getX(),p.getY(),charToPrint,CSIColor.WHITE);
  	 		}
  	 	}
 

@@ -28,9 +28,9 @@ public class Level{
 	//		 Exception?
 	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
-		if(0<=p.getX()<=this.gridHeight &&
-			0<=p.getY()<=this.gridHeight &&){
-				return this.grid[indexX][indexY];
+		if( 0 <= p.getX() && p.getX() <= this.gridHeight &&
+			0 <= p.getY() && p.getY() <= this.gridHeight){
+				return this.grid[p.getX()][p.getY()];
 		}
 		else{
 			System.out.println("ERROR: Requesting invalid tile.");
@@ -51,12 +51,12 @@ public class Level{
 	}
 
 	public void setStairsUp(){
-		Tile stairsUp = this.getValidTile(this);
+		Tile stairsUp = this.getRandomValidTile(this);
 		stairsUp.setDistStairsUp(0);
 	}
 
 	public void setStairsDown(){
-		Tile stairsDown = this.getValidTile(this);
+		Tile stairsDown = this.getRandomValidTile(this);
 		stairsDown.setDistStairsUp(0);
 	}
 

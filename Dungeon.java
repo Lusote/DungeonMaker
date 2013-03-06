@@ -26,9 +26,11 @@
 		Level oneLevel = new Level();
 		int sizeGridX = oneLevel.getGridHeight();
 		int sizeGridY = oneLevel.getGridWidth();
+		Position p;
 		for(int i=0; i<sizeGridX; i++){
 			for(int j=0; j<sizeGridY; j++){
-				oneLevel.getTile(i,j).setSymbol('#');
+				p = new Position(i,j);
+				oneLevel.getTile(p).setSymbol('#');
 			}
 		}
 		this.allLevels[index] = oneLevel;
