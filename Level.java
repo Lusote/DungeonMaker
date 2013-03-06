@@ -13,8 +13,10 @@ public class Level{
 	private int gridWidth;
 	private int index;
 	private ArrayList<Tile> validTiles = new ArrayList<Tile>();
+	private ArrayList<Room> rooms = new ArrayList<Room>();
 
 	public Level(){
+		this.rooms = new ArrayList<Room>();
 		this.index = 0;
 		this.gridHeight = 80;
 		this.gridWidth = 25;
@@ -30,6 +32,7 @@ public class Level{
 		ArrayList<Tile>doors = new ArrayList<Tile>();
 		Room r = new Room(upLeft, downRight, doors, this.getNumLevel());
 		if(r.isValidRoom()){
+			this.rooms.add(r);
 			int startX = upLeft.getX();
 			int endX= downRight.getX();
 			int startY = upLeft.getY();
