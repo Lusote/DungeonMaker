@@ -1,5 +1,3 @@
-//package Retardliek;
-
 public class Dungeon{
 
 	/* TODO

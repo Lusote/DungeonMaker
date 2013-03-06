@@ -1,13 +1,6 @@
-//package Retardliek;
-
 import java.util.ArrayList;
 
 public class Tile{
-
-	/** TODO:
-	*		Mirar o de ArrayList<Object> e poñer esa merda ben.
-	*
-	*/
 
 	private boolean isExplored;
 	private boolean isOnview;
@@ -15,14 +8,17 @@ public class Tile{
 	private int distStairsUp;
 	private int distStairsDown;
 	private char symbol;
+	private Position pos;
 
+	// This needs to be completed
 	public Tile(){
 		this.isExplored = false;
 		this.isOnview = false;
 		this.thingsOnTile = new ArrayList<Object>();
 		this.distStairsDown = 0;
 		this.distStairsUp = 0;
-		this.symbol = 'X';
+		this.symbol = 'E';
+		this.pos = null,
 	}
 
 	public boolean getIsExplored(){
