@@ -31,22 +31,42 @@ public class Position{
 		}
 	}
 
-	public Position getPositionRight(){
+	public Position getPositionNW(){
+		Position p = new Position(this.getX()-1, this.getY()-1);
+		return p;
+	}
+
+	public Position getPositionNE(){
+		Position p = new Position(this.getX()-1, this.getY()+1);
+		return p;
+	}
+
+	public Position getPositionSW(){
+		Position p = new Position(this.getX()+1, this.getY()-1);
+		return p;
+	}
+
+	public Position getPositionSE(){
+		Position p = new Position(this.getX()+1, this.getY()+1);
+		return p;
+	}
+
+	public Position getPositionE(){
 		Position p = new Position(this.getX()+1, this.getY());
 		return p;
 	}	
 
-	public Position getPositionLeft(){
+	public Position getPositionW(){
 		Position p = new Position(this.getX()-1, this.getY());
 		return p;
 	}
 	
-	public Position getPositionOver(){
+	public Position getPositionN(){
 		Position p = new Position(this.getX(), this.getY()-1);
 		return p;
 	}
 	
-	public Position getPositionUnder(){
+	public Position getPositionS(){
 		Position p = new Position(this.getX(), this.getY()+1);
 		return p;
 	}

@@ -65,12 +65,6 @@ public class Tile{
 	// Only checks for map limits
 	public boolean isValidTileForRoom(){
 		Position p = this.getPosition();
-		System.out.println("Vamos a ver posiciones!!");
-		System.out.println(p.getY());
-		System.out.println(p.getX());
-		System.out.println(p.getY());
-		System.out.println("bieeeen!!");
-		System.out.println("");
 		boolean bol = ( 1 <= p.getX() 		 &&
 							 p.getX() <= 78  &&
 						1 <= p.getY() 		 && 

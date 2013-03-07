@@ -1,30 +1,67 @@
 import java.util.ArrayList;
 import java.util.Set;
 
+/**
+*	TODO:
+*		addWalls(): I need a more efficient way to do that.
+*/
+
 public class Room{
 
-	private int upX;
-	private int bottomX;
-	private int leftY;
-	private int rightY;
+	private Position upLeft;
+	private Position bottomLeft;
+	private Position upRight;
+	private Position bottomRight;
 	private int level;
-	private ArrayList<Tile> doors = new ArrayList<Tile>();	
+	private ArrayList<Position> doors = new ArrayList<Position>();
+	private ArrayList<Position> walls = new ArrayList<Position>();	
 
-	public Room(int uX, int bX, int lY, int rY, ArrayList<Tile> d, int lev){	
-		this.upX = uX;
-		this.bottomX = bX;
-		this.leftY = lY;
-		this.rightY = rY;
+	public Room(Position uL, Position uR, Position bL, Position bR,
+				 ArrayList<Position> d, int lev){	
+		this.upLeft = uL;
+		this.bottomLeft = bL;
+		this.upRight = uR;
+		this.bottomRight = bR;
+		this.doors = d;
+		this.level = lev;
+		walls = addWalls(uL,uR,bL,bR);
+	}
+
+	public Room(Position upLeft, Position downRight, ArrayList<Position> d, int lev){
+		this.upLeft = upLeft;
+		this.bottomLeft = new Position(upLeft.getX(), downRight.getY());
+		this.upRight = new Position(downRight.getX(), upLeft.getY());
+		this.bottomRight = downRight;
 		this.doors = d;
 		this.level = lev;
 	}
-	public Room(Position upLeft, Position downRight, ArrayList<Tile> d, int lev){
-		this.upX = upLeft.getX();
-		this.bottomX = downRight.getX();
-		this.leftY = upLeft.getY();
-		this.rightY = downRight.getY();
-		this.doors = d;
-		this.level = lev;
+
+	// I need a more efficient way. For now, this will do the trick.
+	public ArrayList<Position> addWalls(Position uL,Position uR,
+										Position bL,Position bR){
+		Position northWest = uL.getPositionNW();
+		Position northEast = uR.getPositionNE();
+		Position southWest = bL.getPositionSW();
+		Position southEast = bR.getPositionSE();
+		Position p;
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		for (int i = northWest.getX(); i <= northEast.getX() ; i++) {
+			p = new Position(i, northWest.getY());
+			toReturn.add(p);
+		}
+		for (int i = northEast.getPositionS().getY(); i <= southEast.getY() ; i++) {
+			p = new Position(northEast.getX(), i);
+			toReturn.add(p);
+		}
+		for (int i = southEast.getPositionW().getX(); i <= southWest.getX() ; i++) {
+			p = new Position(i, southWest.getY());
+			toReturn.add(p);
+		}
+		for (int i = southWest.getPositionN().getY(); i <= northWest.getY() ; i++) {
+			p = new Position(southWest.getX(), i);
+			toReturn.add(p);
+		}
+		return toReturn;
 	}
 
 	public boolean isValidRoom(){
@@ -48,23 +85,19 @@ public class Room{
 	}
 
 	public Position getRoomUpperLeft(){
-		Position p = new Position(this.upX, this.leftY);
-		return p;
+		return this.upLeft;
 	}
 
 	public Position getRoomUpperRight(){
-		Position p = new Position(this.upX, this.leftY);
-		return p;
+		return this.upRight;
 	}
 
 	public Position getRoomBottonLeft(){
-		Position p = new Position(this.bottomX, this.leftY);
-		return p;
+		return this.bottomLeft;
 	}
 
 	public Position getRoomBottonRight(){
-		Position p = new Position(this.bottomX, this.rightY);
-		return p;
+		return this.bottomRight;
 	}
 
 }

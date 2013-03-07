@@ -24,8 +24,9 @@ public class DungeonPrinter{
 		randomRoomWidth  = randomPosWidth  + randomGenerator.nextInt(6)+1;
 		Position pUpLeft = new Position(randomPosHeight,randomPosWidth);
 		Position pDownRight = new Position(randomRoomHeight, randomRoomWidth);
+		
 		dun.getCurrentLevel().createRoom(pUpLeft, pDownRight);
-
+		
 		System.out.println("Hueco: "+randomPosHeight+", "+randomPosWidth);
 	}
 

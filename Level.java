@@ -4,6 +4,7 @@ import java.util.Random;
 /*
 *	TODO:
 *		getTile();
+*		createRoom(): Fail case. INCOMPLETE.
 */
 
 public class Level{
@@ -28,8 +29,18 @@ public class Level{
 		 }
 	}
 
+	public Level(ArrayList<Room> r, int i, int gH, int gW, Tile[][] tiles){
+		this.rooms = r;
+		this.index = i;
+		this.gridHeight = gH;
+		this.gridWidth = gW;
+		this.grid = tiles;
+	}
+
+	// Check in case of invalid tiles.
+	// Deprecated and incomplete. Needs to return a Room
 	public void createRoom(Position upLeft, Position downRight){
-		ArrayList<Tile>doors = new ArrayList<Tile>();
+		ArrayList<Position>doors = new ArrayList<Position>();
 		Room r = new Room(upLeft, downRight, doors, this.getNumLevel());
 		if(r.isValidRoom()){
 			this.rooms.add(r);
@@ -46,8 +57,9 @@ public class Level{
 					if(t.isValidTileForRoom()){	
 						t.setSymbol('.');
 					}
-					else{	
-
+					else{
+						System.out.println("Level.createRoom: Invalid Tile for Room.");
+						break;
 					}
 				}
 			}
@@ -57,8 +69,7 @@ public class Level{
 		}
 	}
 
-	// TODO: Return en caso de caldeiro?
-	//		 Exception?
+	// TODO: Return on fail?
 	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
 		if( 0 <= p.getX() && p.getX() <= this.gridHeight &&
