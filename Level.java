@@ -4,7 +4,6 @@ import java.util.Random;
 /*
 *	TODO:
 *		getTile();
-*		createRoom(): Fail case. INCOMPLETE.
 */
 
 public class Level{
@@ -22,28 +21,29 @@ public class Level{
 		this.gridHeight = 80;
 		this.gridWidth = 25;
 		this.grid = new Tile[gridHeight][gridWidth];
-		 for(int i=0;i<80;i++){
+		for(int i=0;i<80;i++){
 		 	for(int j=0;j<25;j++){
 		 		this.grid[i][j] = new Tile();
 		 	}
 		 }
 	}
 
-	public Level(ArrayList<Room> r, int i, int gH, int gW, Tile[][] tiles){
-		this.rooms = r;
+	public Level(int i, int gH, int gW){
+		this.rooms = new ArrayList<Room>();
 		this.index = i;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
-		this.grid = tiles;
+		for(int in = 0; in <gH ;in++){
+		 	for(int j=0;j<gW;j++){
+		 		this.grid[in][j] = new Tile();
+		 	}
+		 }
 	}
 
-	// Check in case of invalid tiles.
-	// Deprecated and incomplete. Needs to return a Room
-	public void createRoom(Position upLeft, Position downRight){
+	public Room createRoom(Position upLeft, Position downRight){
 		ArrayList<Position>doors = new ArrayList<Position>();
 		Room r = new Room(upLeft, downRight, doors, this.getNumLevel());
 		if(r.isValidRoom()){
-			this.rooms.add(r);
 			int startX = upLeft.getX();
 			int endX= downRight.getX();
 			int startY = upLeft.getY();
@@ -54,20 +54,29 @@ public class Level{
 				for(int j=startY; j<=endY; j++){
 					Position p = new Position(i,j);
 					t = this.getTile(p);
-					if(t.isValidTileForRoom()){	
-						t.setSymbol('.');
-					}
-					else{
-						System.out.println("Level.createRoom: Invalid Tile for Room.");
-						break;
-					}
+					t.setSymbol('.');
+					//Already checked on the If condition.
+					// if(t.isValidTileForRoom()){	
+					// 	t.setSymbol('.');
+					// }
+					// else{
+					// 	System.out.println("Level.createRoom: Invalid Tile for Room.");
+					// 	break;
+					// }
 				}
 			}
+			return r;
 		}
 		else {
 		System.out.println("Invalid room.");
+		return null;
 		}
 	}
+
+	public void addRoom(Room r){
+		this.rooms.add(r);
+	}
+
 
 	// TODO: Return on fail?
 	public Tile getTile(Position p){

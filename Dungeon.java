@@ -6,6 +6,9 @@
 	*		Check limits.
 	*		Works for now, but it won't work on game (with manyy levels and such)
 	*
+	*	initializeOneLevel:
+	*		The final version shall create the rooms and corridors.
+	*
 	*/
 
 	public class Dungeon{
