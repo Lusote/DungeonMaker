@@ -27,9 +27,9 @@
 	// Initialize a Level
 	public Level initializeOneLevel(int index){
 		System.out.println("Initializing a level.");
-		Level oneLevel = new Level();
-		int sizeGridX = oneLevel.getGridHeight();
-		int sizeGridY = oneLevel.getGridWidth();
+		Level oneLevel = new Level(index, 25,80);
+		int sizeGridX = oneLevel.getGridWidth();
+		int sizeGridY = oneLevel.getGridHeight();
 		Position p;
 		for(int i=0; i<sizeGridX; i++){
 			for(int j=0; j<sizeGridY; j++){

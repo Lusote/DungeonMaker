@@ -8,54 +8,50 @@ import java.util.Random;
 
 public class Level{
 
-	private Tile[][] grid; 
+	private int index;
 	private int gridHeight;
 	private int gridWidth;
-	private int index;
-	private ArrayList<Tile> validTiles = new ArrayList<Tile>();
-	private ArrayList<Room> rooms = new ArrayList<Room>();
+	private Tile[][] grid; 
+	private ArrayList<Room> rooms;
+	private ArrayList<Tile> roomsTiles;
+	private ArrayList<Tile> roomsAndWallsTiles;
 
-	public Level(){
-		this.rooms = new ArrayList<Room>();
-		this.index = 0;
-		this.gridHeight = 80;
-		this.gridWidth = 25;
-		this.grid = new Tile[gridHeight][gridWidth];
-		for(int i=0;i<80;i++){
-		 	for(int j=0;j<25;j++){
-		 		this.grid[i][j] = new Tile();
-		 	}
-		 }
-	}
 
 	public Level(int i, int gH, int gW){
 		this.rooms = new ArrayList<Room>();
+		this.roomsTiles = new ArrayList<Tile>();
+		this.roomsAndWallsTiles = new ArrayList<Tile>();
 		this.index = i;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
-		for(int in = 0; in <gH ;in++){
-		 	for(int j=0;j<gW;j++){
+		this.grid = new Tile[gW][gH];
+		for(int in = 0; in <gW ;in++){
+		 	for(int j=0;j<gH;j++){
 		 		this.grid[in][j] = new Tile();
 		 	}
 		 }
 	}
 
-	public Room createRoom(Position upLeft, Position downRight){
-		ArrayList<Position>doors = new ArrayList<Position>();
-		Room r = new Room(upLeft, downRight, doors, this.getNumLevel());
-		if(r.isValidRoom()){
-			int startX = upLeft.getX();
-			int endX= downRight.getX();
-			int startY = upLeft.getY();
-			int endY = downRight.getY();
+	public Room createRoom(Tile upLeft, Tile upRight, 
+							Tile downLeft, Tile downRight){
+
+		ArrayList<Tile>doors = new ArrayList<Tile>();
+		Room r = new Room(upLeft, upRight, downLeft, downRight, 
+							doors, this.getNumLevel(), this.getGrid());
+		boolean isValidR = r.isValidRoom(this.getRoomAndWallTiles());
+		if(isValidR){
+			int startX = upLeft.getPosition().getX();
+			int endX = downRight.getPosition().getX();
+			int startY = upLeft.getPosition().getY();
+			int endY = downRight.getPosition().getY();
 			Tile t;
-			boolean isValidR = r.isValidRoom();
 			for(int i = startX; i<=endX; i++){
 				for(int j=startY; j<=endY; j++){
 					Position p = new Position(i,j);
 					t = this.getTile(p);
 					t.setSymbol('.');
-					//Already checked on the If condition.
+					this.roomsAndWallsTiles.add(t);
+					// Already checked on the If condition.
 					// if(t.isValidTileForRoom()){	
 					// 	t.setSymbol('.');
 					// }
@@ -65,6 +61,7 @@ public class Level{
 					// }
 				}
 			}
+			this.roomsAndWallsTiles.addAll(r.getWalls());
 			return r;
 		}
 		else {
@@ -77,11 +74,22 @@ public class Level{
 		this.rooms.add(r);
 	}
 
+	public Tile[][] getGrid(){
+		return this.grid;
+	}
+
+	public ArrayList<Room> getRooms(){
+		return this.rooms;
+	}	
+
+	public ArrayList<Tile> getRoomAndWallTiles(){
+		return this.roomsAndWallsTiles;
+	}
 
 	// TODO: Return on fail?
 	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
-		if( 0 <= p.getX() && p.getX() <= this.gridHeight &&
+		if( 0 <= p.getX() && p.getX() <= this.gridWidth &&
 			0 <= p.getY() && p.getY() <= this.gridHeight){
 				return this.grid[p.getX()][p.getY()];
 		}
@@ -95,17 +103,17 @@ public class Level{
 		return this.index;
 	}
 
-	// Returns a random valid tile (allegedly)
-	public Tile getRandomValidTile(Level l){
-		Random randomGen = new Random();
-		int indexValidTile = randomGen.nextInt(validTiles.size());
-		Tile tileReturn = validTiles.get(indexValidTile);
-		while(!tileReturn.isTileEmpty()){
-			indexValidTile = randomGen.nextInt(validTiles.size());
-			tileReturn = validTiles.get(indexValidTile);
-		}
-		return tileReturn;
-	}
+	// Returns a random floor tile (allegedly)
+	 public Tile getRandomValidTile(Level l){
+	 	Random randomGen = new Random();
+	 	int indexValidTile = randomGen.nextInt(roomsTiles.size());
+	 	Tile tileReturn = roomsTiles.get(indexValidTile);
+	 	while(!tileReturn.isTileEmpty()){
+	 		indexValidTile = randomGen.nextInt(roomsTiles.size());
+	 		tileReturn = roomsTiles.get(indexValidTile);
+	 	}
+	 	return tileReturn;
+	 }
 
 	public void setStairsUp(){
 		Tile stairsUp = this.getRandomValidTile(this);

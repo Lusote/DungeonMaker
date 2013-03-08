@@ -18,16 +18,17 @@ public class DungeonPrinter{
 	} 
 
 	public static void printRandomRoom(Dungeon dun){
-		randomPosHeight  = randomGenerator.nextInt(78)+1;
-		randomPosWidth   = randomGenerator.nextInt(23)+1;
+		randomPosWidth  = randomGenerator.nextInt(78)+1;
+		randomPosHeight   = randomGenerator.nextInt(23)+1;
 		randomRoomHeight = randomPosHeight + randomGenerator.nextInt(6)+1;
 		randomRoomWidth  = randomPosWidth  + randomGenerator.nextInt(6)+1;
-		Position pUpLeft = new Position(randomPosHeight,randomPosWidth);
-		Position pDownRight = new Position(randomRoomHeight, randomRoomWidth);
+
+		// Position pUpLeft = new Position(randomPosHeight,randomPosWidth);
+		// Position pDownRight = new Position(randomRoomHeight, randomRoomWidth);
 		
-		dun.getCurrentLevel().createRoom(pUpLeft, pDownRight);
+		// dun.getCurrentLevel().createRoom(pUpLeft, pDownRight);
 		
-		System.out.println("Hueco: "+randomPosHeight+", "+randomPosWidth);
+		System.out.println("Hueco: "+randomPosWidth+", "+randomPosHeight);
 	}
 
 	public static void printDungeon(Dungeon dun, int lev, ConsoleSystemInterface csi){
@@ -37,14 +38,15 @@ public class DungeonPrinter{
 		char charToPrint;
 		Tile tileToPrint;
 		Position p;
-		 for(int i=0;i<dunHeight;i++){
-		 	for(int j=0;j<dunWidth;j++){
+		 for(int i=0;i<dunWidth;i++){
+		 	for(int j=0;j<dunHeight;j++){
 		 		p = new Position(i,j);
 		 		tileToPrint = levelToPrint.getTile(p);
 		 		charToPrint = tileToPrint.getSymbol();
 		 		csi.print(p.getX(),p.getY(),charToPrint,CSIColor.WHITE);
 			}
  	 	}
+ 	 	
 
 	}
 

@@ -17,7 +17,6 @@ public class Tile{
 	private Position pos;
 	private int level;
 
-	// This needs to be completed
 	public Tile(){
 		this.isExplored = false;
 		this.isOnview = false;
