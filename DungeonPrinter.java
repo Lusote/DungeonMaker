@@ -7,28 +7,29 @@ import java.util.Random;
 
 public class DungeonPrinter{
 
-	static int randomPosHeight;
-	static int randomPosWidth;
-	static int randomRoomHeight; 
-	static int randomRoomWidth;
     static Random randomGenerator = new Random();
 
 	public DungeonPrinter(){
 		
 	} 
 
-	public static void printRandomRoom(Dungeon dun){
-		randomPosWidth  = randomGenerator.nextInt(78)+1;
-		randomPosHeight   = randomGenerator.nextInt(23)+1;
-		randomRoomHeight = randomPosHeight + randomGenerator.nextInt(6)+1;
-		randomRoomWidth  = randomPosWidth  + randomGenerator.nextInt(6)+1;
+	public static int printRandomRoom(Dungeon maz){
+		int randomIndexULX = randomGenerator.nextInt(78)+1;
+		int randomIndexULY = randomGenerator.nextInt(23)+1;
+		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+1;		
+		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(6)+1;
+		Position uL = new Position(randomIndexULX,randomIndexULY);
+		Position bR = new Position(randomIndexBRX, randomIndexBRY);
+		Position bL = new Position(randomIndexULX, randomIndexBRY);
+		Position uR = new Position(randomIndexBRX, randomIndexULY);
 
-		// Position pUpLeft = new Position(randomPosHeight,randomPosWidth);
-		// Position pDownRight = new Position(randomRoomHeight, randomRoomWidth);
-		
-		// dun.getCurrentLevel().createRoom(pUpLeft, pDownRight);
-		
-		System.out.println("Hueco: "+randomPosWidth+", "+randomPosHeight);
+			Room r = maz.getCurrentLevel().createRoom(
+						maz.getCurrentLevel().getTile(uL),
+						maz.getCurrentLevel().getTile(uR),
+						maz.getCurrentLevel().getTile(bL),
+						maz.getCurrentLevel().getTile(bR)
+					);
+		return 1;
 	}
 
 	public static void printDungeon(Dungeon dun, int lev, ConsoleSystemInterface csi){

@@ -13,14 +13,14 @@ public class Level{
 	private int gridWidth;
 	private Tile[][] grid; 
 	private ArrayList<Room> rooms;
-	private ArrayList<Tile> roomsTiles;
-	private ArrayList<Tile> roomsAndWallsTiles;
+	private ArrayList<Tile> floorTiles;
+	private ArrayList<Tile> floorAndWallsTiles;
 
 
 	public Level(int i, int gH, int gW){
 		this.rooms = new ArrayList<Room>();
-		this.roomsTiles = new ArrayList<Tile>();
-		this.roomsAndWallsTiles = new ArrayList<Tile>();
+		this.floorTiles = new ArrayList<Tile>();
+		this.floorAndWallsTiles = new ArrayList<Tile>();
 		this.index = i;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
@@ -34,11 +34,14 @@ public class Level{
 
 	public Room createRoom(Tile upLeft, Tile upRight, 
 							Tile downLeft, Tile downRight){
-
+		try{
+		boolean isValidR = (upLeft.isValidTileForRoom() &&
+							upRight.isValidTileForRoom() &&
+							downLeft.isValidTileForRoom() &&
+							downRight.isValidTileForRoom());
 		ArrayList<Tile>doors = new ArrayList<Tile>();
 		Room r = new Room(upLeft, upRight, downLeft, downRight, 
 							doors, this.getNumLevel(), this.getGrid());
-		boolean isValidR = r.isValidRoom(this.getRoomAndWallTiles());
 		if(isValidR){
 			int startX = upLeft.getPosition().getX();
 			int endX = downRight.getPosition().getX();
@@ -50,7 +53,8 @@ public class Level{
 					Position p = new Position(i,j);
 					t = this.getTile(p);
 					t.setSymbol('.');
-					this.roomsAndWallsTiles.add(t);
+					this.floorTiles.add(t);
+					this.floorAndWallsTiles.add(t);
 					// Already checked on the If condition.
 					// if(t.isValidTileForRoom()){	
 					// 	t.setSymbol('.');
@@ -61,12 +65,17 @@ public class Level{
 					// }
 				}
 			}
-			this.roomsAndWallsTiles.addAll(r.getWalls());
+			this.floorAndWallsTiles.addAll(r.getWalls());
 			return r;
 		}
 		else {
 		System.out.println("Invalid room.");
 		return null;
+		}
+		}
+		catch(Exception e){
+			System.out.println("ERROR creating room. Invalid Tile.");
+			return null;
 		}
 	}
 
@@ -83,14 +92,14 @@ public class Level{
 	}	
 
 	public ArrayList<Tile> getRoomAndWallTiles(){
-		return this.roomsAndWallsTiles;
+		return this.floorAndWallsTiles;
 	}
 
 	// TODO: Return on fail?
 	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
-		if( 0 <= p.getX() && p.getX() <= this.gridWidth &&
-			0 <= p.getY() && p.getY() <= this.gridHeight){
+		if( 0 <= p.getX() && p.getX() < this.gridWidth &&
+			0 <= p.getY() && p.getY() < this.gridHeight){
 				return this.grid[p.getX()][p.getY()];
 		}
 		else{
@@ -106,11 +115,11 @@ public class Level{
 	// Returns a random floor tile (allegedly)
 	 public Tile getRandomValidTile(Level l){
 	 	Random randomGen = new Random();
-	 	int indexValidTile = randomGen.nextInt(roomsTiles.size());
-	 	Tile tileReturn = roomsTiles.get(indexValidTile);
+	 	int indexValidTile = randomGen.nextInt(floorTiles.size());
+	 	Tile tileReturn = floorTiles.get(indexValidTile);
 	 	while(!tileReturn.isTileEmpty()){
-	 		indexValidTile = randomGen.nextInt(roomsTiles.size());
-	 		tileReturn = roomsTiles.get(indexValidTile);
+	 		indexValidTile = randomGen.nextInt(floorTiles.size());
+	 		tileReturn = floorTiles.get(indexValidTile);
 	 	}
 	 	return tileReturn;
 	 }

@@ -33,31 +33,36 @@ public class Room{
 		int i;
 		int ini;
 		int fin;
-		Tile aux ;
+		int j;
+		Tile aux;
 		ArrayList<Tile> toReturn = new ArrayList<Tile>();
 
 		ini = uL.getPosition().getPositionNW().getX();
 		fin = uR.getPosition().getPositionNE().getX();
+		j = uL.getPosition().getPositionNW().getY();
 		for(i = ini; i <= fin ; i++){
-			aux = grid[i][uL.getPosition().getY()+1];
+			aux = grid[i][j];
 			toReturn.add(aux);
 		}
 		ini = uR.getPosition().getPositionE().getY();
 		fin = bR.getPosition().getPositionSE().getY();
+		j = uR.getPosition().getPositionE().getX();
 		for(i = ini; i <= fin; i++){
-			aux = grid[uR.getPosition().getX()+1][i];
+			aux = grid[j][i];
 			toReturn.add(aux);
 		}
 		ini = bR.getPosition().getPositionS().getX();
 		fin = bL.getPosition().getPositionSW().getX();
-		for(i = ini; i <= fin; i--){
-			aux = grid[i][bR.getPosition().getY()+1];
+		j = bR.getPosition().getPositionS().getY();
+		for(i = ini; i >= fin; i--){
+			aux = grid[i][j];
 			toReturn.add(aux);
 		}
 		ini = bL.getPosition().getPositionW().getY();
 		fin = uL.getPosition().getPositionW().getY();
-		for(i = ini; i <= fin; i--){
-			aux = grid[uL.getPosition().getX()][i];
+		j = bL.getPosition().getPositionW().getX();
+		for(i = ini; i >= fin; i--){
+			aux = grid[j][i];
 			toReturn.add(aux);
 		}
 		return toReturn;
@@ -69,19 +74,14 @@ public class Room{
 		// if(this.isRoomOverlapping(otherRooms)){
 
 		// }
-		if(!this.getRoomUpperLeft().isValidTileForRoom()){
-			return false;
+		if(this.getRoomUpperLeft().isValidTileForRoom() &&
+			this.getRoomUpperRight().isValidTileForRoom() &&
+			this.getRoomBottonLeft().isValidTileForRoom() &&
+			this.getRoomBottonRight().isValidTileForRoom()
+			){
+			return true;
 		}
-		if(!this.getRoomUpperRight().isValidTileForRoom()){
-			return false;
-		}
-		if(!this.getRoomBottonLeft().isValidTileForRoom()){
-			return false;
-		}
-		if(!this.getRoomBottonRight().isValidTileForRoom()){
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	public ArrayList<Tile> getWalls(){
