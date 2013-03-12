@@ -1,8 +1,13 @@
-Just a simple dungeon maker.
+DungeonMaker
+===================
 
-Features:
-	Rectangular non-overlapping rooms.
-	Rooms linked with corridors.
-	Each room has (at least) two exits.
-	One pair of stairs per level (Up and Down).
+This is just a very simple dungeon maker for my soon-to-come roguelike.
+
+
+Features on Milestone 1:
+
+* Rectangular non-overlapping rooms.
+* Rooms linked with corridors.
+* Each room has (at least) two exits.
+* One pair of stairs per level (Up and Down).
 	

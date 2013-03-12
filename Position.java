@@ -37,12 +37,12 @@ public class Position{
 	}
 
 	public Position getPositionNE(){
-		Position p = new Position(this.getX()-1, this.getY()+1);
+		Position p = new Position(this.getX()+1, this.getY()-1);
 		return p;
 	}
 
 	public Position getPositionSW(){
-		Position p = new Position(this.getX()+1, this.getY()-1);
+		Position p = new Position(this.getX()-1, this.getY()+1);
 		return p;
 	}
 

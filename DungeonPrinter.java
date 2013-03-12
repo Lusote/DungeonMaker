@@ -77,6 +77,9 @@ public class DungeonPrinter{
  			if(dir.code == CharKey.Q){
 					stop = true;
 			}
+			if(dir.code == CharKey.i){
+					System.out.println("Initializing... Not really.");
+			}
 			if(dir.isLeftArrow()){
 				printRandomRoom(testDungeon);
 			}
