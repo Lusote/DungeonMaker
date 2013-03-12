@@ -30,8 +30,7 @@ public class Room{
 	}
 
 	// I need a more efficient way. For now, this will do the trick.
-	public ArrayList<Position> addWalls(Position uL,Position uR,
-										Position bL,Position bR){
+	public ArrayList<Position> addWalls(Position uL,Position uR,Position bL,Position bR){
 		int i;
 		int ini;
 		int fin;
@@ -85,7 +84,7 @@ public class Room{
 		return ret;
 	}
 
-	// Needs a better way. 
+	// Needs a better way. But works.
 	public boolean isRoomOverlapping(ArrayList<Position> floorAndWallsUsed){
 		int ini, fin, i, j;
 		ArrayList<Position> borderFloor = new ArrayList<Position>();
@@ -117,7 +116,6 @@ public class Room{
 		for(i = ini; i >= fin; i--){
 			borderFloor.add(new Position(j,i));
 		}
-
 
 		for (Position p : floorAndWallsUsed) {
 			for (Position p2 : borderFloor){

@@ -7,30 +7,9 @@ import java.util.Random;
 
 public class DungeonPrinter{
 
-    static Random randomGenerator = new Random();
-
 	public DungeonPrinter(){
 		
 	} 
-
-	public static int printRandomRoom(Dungeon maz){
-		int randomIndexULX = randomGenerator.nextInt(78)+1;
-		int randomIndexULY = randomGenerator.nextInt(23)+1;
-		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+1;		
-		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(6)+1;
-		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position bR = new Position(randomIndexBRX, randomIndexBRY);
-		Position bL = new Position(randomIndexULX, randomIndexBRY);
-		Position uR = new Position(randomIndexBRX, randomIndexULY);
-
-			Room r = maz.getCurrentLevel().createRoom(
-						maz.getCurrentLevel().getTile(uL),
-						maz.getCurrentLevel().getTile(uR),
-						maz.getCurrentLevel().getTile(bL),
-						maz.getCurrentLevel().getTile(bR)
-					);
-		return 1;
-	}
 
 	public static void printDungeon(Dungeon dun, int lev, ConsoleSystemInterface csi){
 		int dunHeight = dun.getLevel(lev).getGridHeight();
@@ -81,7 +60,7 @@ public class DungeonPrinter{
 					System.out.println("Initializing... Not really.");
 			}
 			if(dir.isLeftArrow()){
-				printRandomRoom(testDungeon);
+				testDungeon.getLevel(0).printRandomRoom();
 			}
 			if(dir.code == CharKey.r){
 				csi.cls();

@@ -1,3 +1,5 @@
+import java.util.Random;
+
 	/* TODO
 	*	GENERAL:
 	*		Save and Load level on change
@@ -14,20 +16,29 @@
 	public class Dungeon{
 
 	private static int numOfLevels = 1;
-	private int indexCurrentLevel;
+	private int levelWidth = 80;
+	private int levelHeight = 25;
+	private int indexCurrentLevel, lHeight,lWidth;
 	private Level currentLevel;
 	private Level[] allLevels = new Level[numOfLevels];
+    private static Random randomGenerator = new Random();
 
 	public Dungeon(){
-		this.allLevels[0] = initializeOneLevel(0);
 		this.indexCurrentLevel = 0;
 		this.currentLevel = allLevels[0];
+		this.lWidth = levelWidth;
+		System.out.println("DungeonWidth = "+this.lWidth);
+		this.lHeight = levelHeight;
+		System.out.println("DungeonWHeight = "+this.lHeight);
+		this.allLevels[0] = initializeOneLevel(0);
 	}
 
 	// Initialize a Level
 	public Level initializeOneLevel(int index){
-		System.out.println("Initializing a level.");
-		Level oneLevel = new Level(index, 25,80);
+		System.out.println("Initializing a level:");
+		System.out.println("LH: "+this.getLevelHeight());
+		System.out.println("LW: "+this.getLevelWidth());
+		Level oneLevel = new Level(index, this.getLevelHeight(), this.getLevelWidth());
 		int sizeGridX = oneLevel.getGridWidth();
 		int sizeGridY = oneLevel.getGridHeight();
 		Position p;
@@ -46,6 +57,14 @@
 
 	public Level getLevel(int lev){
 		return this.allLevels[lev];
+	}
+
+	public int getLevelWidth(){
+		return this.lWidth;
+	}
+
+	public int getLevelHeight(){
+		return this.lHeight;
 	}
 
 	public Level getCurrentLevel(){
