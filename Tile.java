@@ -4,6 +4,7 @@ import java.util.ArrayList;
 *	TODO:
 *		Another constructor, complete, if possible.
 *		Test getNeighbours.
+*		Validtile: adapt methods to Position methods
 */
 
 public class Tile{
@@ -17,6 +18,7 @@ public class Tile{
 	private Position pos;
 	private int level;
 
+	// Test constructor. Not really viable
 	public Tile(){
 		this.isExplored = false;
 		this.isOnview = false;
@@ -28,6 +30,7 @@ public class Tile{
 		this.level = 0;
 	}
 
+	// The actual constructor.
 	public Tile(boolean explored, boolean view, ArrayList<Object> things,
 				int distDown, int distUp, char symb, Position p, int lev){
 		this.isExplored = explored;
@@ -61,7 +64,10 @@ public class Tile{
 		return n;				
 	}
 
-	// Only checks for map limits
+
+	// Only checks for map limits(adapted for rooms)
+	// We can't pick a border, because the walls will be out of the grid.
+	// Maybe use the Position methods....
 	public boolean isValidTileForRoom(){
 		Position p = this.getPosition();
 		boolean bol = ( 1 <= p.getX() 		 &&
@@ -76,6 +82,8 @@ public class Tile{
 		}
 	}
 
+	// Only checks map limits (in general)
+	// Maybe use the Position methods....
 	public boolean isValidTile(){
 		if( 0 <= this.getPosition().getX() && this.getPosition().getX() <= 79 &&
 			0 <= this.getPosition().getY() && this.getPosition().getY()<= 24 ){

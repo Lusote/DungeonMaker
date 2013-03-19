@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.Random;
 
 /**
 *	TODO:
@@ -13,20 +13,49 @@ public class Room{
 	private Position bottomLeft;
 	private Position upRight;
 	private Position bottomRight;
+    private static Random randomGenerator = new Random();
 	private ArrayList<Position> doors = new ArrayList<Position>();
 	private ArrayList<Position> walls = new ArrayList<Position>();	
 
 
-	// The corner Positions MUST be corrrect.
-	public Room(Position uL, Position uR, Position bL, Position bR,
-				 ArrayList<Position> d, int lev){	
+	// The corner Positions MUST be corrrect. 
+	//	That is, this  method doesn't check it.
+	public Room(Position uL, Position uR, Position bL, Position bR, int lev){	
 		this.upLeft = uL;
 		this.bottomLeft = bL;
 		this.upRight = uR;
 		this.bottomRight = bR;
-		this.doors = d;
 		this.level = lev;
 		this.walls = addWalls(uL,uR,bL,bR);
+		this.doors = addDoors(this.walls);
+	}
+
+	public ArrayList<Position> addDoors(ArrayList<Position> walls){
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		Position p,p2;
+		int randomIndex = randomGenerator.nextInt(walls.size()-1);
+		while(toReturn.size()!=2){
+			p = walls.get(randomIndex);
+			if(p.isValidPositionForDoor()	  &&
+				(walls.contains(p.getPositionN()) &&
+				 walls.contains(p.getPositionS())) 
+				||	
+				(walls.contains(p.getPositionE()) &&
+				 walls.contains(p.getPositionW()))				 
+			  ){
+				if(toReturn.size()==0){
+					toReturn.add(walls.get(randomIndex));
+				}
+				else{
+					p2 = toReturn.get(0);
+					if(!p2.getFourNeighbours().contains(p)){
+						toReturn.add(walls.get(randomIndex));
+					}
+				}
+			}
+			randomIndex = randomGenerator.nextInt(walls.size()-1);
+		}
+		return toReturn;
 	}
 
 	// I need a more efficient way. For now, this will do the trick.
@@ -119,7 +148,7 @@ public class Room{
 
 		for (Position p : floorAndWallsUsed) {
 			for (Position p2 : borderFloor){
-				if( p.getX()==p2.getX() && p.getY()==p2.getY()){
+				if( p.equals(p2)){
 					System.out.println("ERROR: Invalid room: overlaps.");
 					return true;
 				}
@@ -130,6 +159,10 @@ public class Room{
 
 	public ArrayList<Position> getWalls(){
 		return this.walls;
+	}
+
+	public ArrayList<Position> getDoors(){
+		return this.doors;
 	}
 
 	public int getRoomLevel(){

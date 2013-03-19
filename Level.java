@@ -40,11 +40,10 @@ public class Level{
 
 	public Room createRoom(Tile upLeft, Tile upRight, Tile downLeft, Tile downRight){
 		try{
-			//Complete Doors
-			ArrayList<Position>doors = new ArrayList<Position>();
+			//Needs to complete doors.
 			Room r = new Room(upLeft.getPosition(), upRight.getPosition(),
-							downLeft.getPosition(), downRight.getPosition(), 
-							doors, this.getNumLevel());
+							downLeft.getPosition(), downRight.getPosition(),
+							this.getNumLevel());
 			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
 			int numFloor = 1;
 			if(isValidR){
@@ -68,6 +67,10 @@ public class Level{
 					}
 				}
 				this.floorAndWallsTiles.addAll(r.getWalls());
+				this.floorAndWallsTiles.addAll(r.getDoors());
+				for(Position p : r.getDoors()){
+					this.getTile(p).setSymbol('.');
+				}
 				return r;
 			}
 			else {

@@ -1,14 +1,33 @@
+import java.util.ArrayList;
 public class Position{
 
 	private int i;
 	private int j;
+
+	/* Pretty simple and self-explaining class.
+	*	Offers the tools for Position-management
+	*	
+	* TODO: 
+	*	ValidPosition needs to check based on the general constant
+	*
+	*/
 
 	public Position(int x, int y){
 		this.i = x;
 		this.j = y;
 	}
 
-	// Only checks map limits
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+    	if (other == this) return true;
+	    if (!(other instanceof Position))return false;
+	    Position another = (Position)other;
+	    if ((another.getX() == this.getX()) && (another.getY() == this.getY())) return true;
+	    else return false;
+	}
+
+	// Only checks map limits (in general)
 	public boolean isValidPosition(){
 		if( 0 <= this.getX() && this.getX() <= 79 &&
 			0 <= this.getY() && this.getY() <= 24 ){
@@ -17,7 +36,16 @@ public class Position{
 		return false;
 	}
 
-	// Only checks for map limits
+	public boolean isValidPositionForDoor(){
+		if( 2 <= this.getX() && this.getX() <= 77 &&
+			2 <= this.getY() && this.getY() <= 22 ){
+			return true;
+		}
+		return false;
+	}
+
+	// Only checks for map limits(adapted for rooms=
+	// We can't pick a border, because the walls will be out of the grid.
 	public boolean isValidPositionForRoom(){
 		boolean bol = ( 1 <= this.getX() 		 &&
 							 this.getX() <= 78  &&
@@ -29,6 +57,15 @@ public class Position{
 		else{
 			return false;
 		}
+	}
+
+	public ArrayList<Position> getFourNeighbours(){
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		toReturn.add(this.getPositionN());
+		toReturn.add(this.getPositionS());
+		toReturn.add(this.getPositionE());
+		toReturn.add(this.getPositionW());
+		return toReturn;
 	}
 
 	public Position getPositionNW(){

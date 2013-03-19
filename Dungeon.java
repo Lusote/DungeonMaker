@@ -21,23 +21,17 @@ import java.util.Random;
 	private int indexCurrentLevel, lHeight,lWidth;
 	private Level currentLevel;
 	private Level[] allLevels = new Level[numOfLevels];
-    private static Random randomGenerator = new Random();
 
 	public Dungeon(){
 		this.indexCurrentLevel = 0;
 		this.currentLevel = allLevels[0];
 		this.lWidth = levelWidth;
-		System.out.println("DungeonWidth = "+this.lWidth);
 		this.lHeight = levelHeight;
-		System.out.println("DungeonWHeight = "+this.lHeight);
 		this.allLevels[0] = initializeOneLevel(0);
 	}
 
 	// Initialize a Level
 	public Level initializeOneLevel(int index){
-		System.out.println("Initializing a level:");
-		System.out.println("LH: "+this.getLevelHeight());
-		System.out.println("LW: "+this.getLevelWidth());
 		Level oneLevel = new Level(index, this.getLevelHeight(), this.getLevelWidth());
 		int sizeGridX = oneLevel.getGridWidth();
 		int sizeGridY = oneLevel.getGridHeight();
