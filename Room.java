@@ -23,8 +23,8 @@ public class Room{
 	// The corner Positions MUST be correct. 
 	//	That is, this  method doesn't check it.
 	public Room(){	
-		int randomIndexULX = randomGenerator.nextInt(gridWidth-2)+1;
-		int randomIndexULY = randomGenerator.nextInt(gridHeight-2)+1;
+		int randomIndexULX = randomGenerator.nextInt(gridWidth-3)+3;
+		int randomIndexULY = randomGenerator.nextInt(gridHeight-3)+3;
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 		this.upLeft  = new Position(randomIndexULX,randomIndexULY);

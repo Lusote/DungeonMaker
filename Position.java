@@ -43,8 +43,8 @@ public class Position{
 	// We can't pick a border and the adjacent file/column because the doors
 	// 	will need corridors.
 	public boolean isValidPositionForDoor(){
-		if( 2 <= this.getX() && this.getX() <= gridWidth-2 &&
-			2 <= this.getY() && this.getY() <= gridHeight-2 ){
+		if( 3 <= this.getX() && this.getX() <= gridWidth-3 &&
+			3 <= this.getY() && this.getY() <= gridHeight-3 ){
 			return true;
 		}
 		return false;
@@ -53,8 +53,8 @@ public class Position{
 	// Only checks for map limits(adapted for rooms)
 	// We can't pick a border, because the walls will be out of the grid.
 	public boolean isValidPositionForRoom(){
-		if( 1 <= this.getX() && this.getX() <= gridWidth-1  &&
-			 1 <= this.getY() && this.getY() <= gridHeight-1
+		if( 3 <= this.getX() && this.getX() <= gridWidth-3  &&
+			 3 <= this.getY() && this.getY() <= gridHeight-3
 			){
 			return true;
 		}
