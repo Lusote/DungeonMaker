@@ -43,55 +43,6 @@ public class Tile{
 		this.level = lev;
 	}
 
-	// UNTESTED
-	// Keep an eye on this
-	public ArrayList<Tile> getNeighbours(Dungeon dun){
-		ArrayList<Tile> n = new ArrayList<Tile>();
-		int i = this.getPosition().getX();
-		int j = this.getPosition().getY();
-		Tile tileToAdd = new Tile();
-		Position p;
-		for(int altI = i-1; altI <= i+1 && altI != i ; altI++){
-			for(int altJ = j-1; altJ <= j+1 && altJ != j; altJ++){
-				p = new Position(i,j);
-				tileToAdd = dun.getLevel(this.level).getTile(p);
-				if(tileToAdd.isValidTile()){
-					System.out.println("Tile.getNeighbours add: "+altI+" "+altJ);
-					n.add(tileToAdd);					
-				}
-			}
-		}
-		return n;				
-	}
-
-
-	// Only checks for map limits(adapted for rooms)
-	// We can't pick a border, because the walls will be out of the grid.
-	// Maybe use the Position methods....
-	public boolean isValidTileForRoom(){
-		Position p = this.getPosition();
-		boolean bol = ( 1 <= p.getX() 		 &&
-							 p.getX() <= 78  &&
-						1 <= p.getY() 		 && 
-							 p.getY() <= 23);
-		if( bol ){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-
-	// Only checks map limits (in general)
-	// Maybe use the Position methods....
-	public boolean isValidTile(){
-		if( 0 <= this.getPosition().getX() && this.getPosition().getX() <= 79 &&
-			0 <= this.getPosition().getY() && this.getPosition().getY()<= 24 ){
-			return true;
-		}
-		return false;
-	}
-
 	public Position getPosition(){
 		return this.pos;
 	}

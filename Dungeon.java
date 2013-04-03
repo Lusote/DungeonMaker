@@ -6,7 +6,7 @@ import java.util.Random;
 	*
 	*	dungeonLevelDown & dungeonLevelUp:
 	*		Check limits.
-	*		Works for now, but it won't work on game (with manyy levels and such)
+	*		Works for now, but it won't work on game (with many levels and such)
 	*
 	*	initializeOneLevel:
 	*		The final version shall create the rooms and corridors.
@@ -16,8 +16,8 @@ import java.util.Random;
 	public class Dungeon{
 
 	private static int numOfLevels = 1;
-	private int levelWidth = 80;
-	private int levelHeight = 25;
+	private int levelWidth = 79;
+	private int levelHeight = 24;
 	private int indexCurrentLevel, lHeight,lWidth;
 	private Level currentLevel;
 	private Level[] allLevels = new Level[numOfLevels];
@@ -36,8 +36,8 @@ import java.util.Random;
 		int sizeGridX = oneLevel.getGridWidth();
 		int sizeGridY = oneLevel.getGridHeight();
 		Position p;
-		for(int i=0; i<sizeGridX; i++){
-			for(int j=0; j<sizeGridY; j++){
+		for(int i=0; i<=sizeGridX; i++){
+			for(int j=0; j<=sizeGridY; j++){
 				p = new Position(i,j);
 				oneLevel.getTile(p).setSymbol('#');
 				oneLevel.getTile(p).setPosition(p);

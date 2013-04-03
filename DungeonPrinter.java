@@ -18,8 +18,8 @@ public class DungeonPrinter{
 		char charToPrint;
 		Tile tileToPrint;
 		Position p;
-		 for(int i=0;i<dunWidth;i++){
-		 	for(int j=0;j<dunHeight;j++){
+		 for(int i=0;i<=dunWidth;i++){
+		 	for(int j=0;j<=dunHeight;j++){
 		 		p = new Position(i,j);
 		 		tileToPrint = levelToPrint.getTile(p);
 		 		charToPrint = tileToPrint.getSymbol();

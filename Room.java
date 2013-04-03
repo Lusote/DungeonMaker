@@ -1,35 +1,42 @@
 import java.util.ArrayList;
 import java.util.Random;
-
-/**
+   
+/*
 *	TODO:
 *		addWalls(): I need a more efficient way to do that.
 */
 
 public class Room{
 
-	private int level;
 	private Position upLeft;
 	private Position bottomLeft;
 	private Position upRight;
 	private Position bottomRight;
-    private static Random randomGenerator = new Random();
-	private ArrayList<Position> doors = new ArrayList<Position>();
-	private ArrayList<Position> walls = new ArrayList<Position>();	
+  private static Random randomGenerator = new Random();
+  private ArrayList<Position> doors = new ArrayList<Position>();
+  private ArrayList<Position> walls = new ArrayList<Position>();
+
+	private static int gridWidth = 79;
+	private static int gridHeight = 24;	
 
 
-	// The corner Positions MUST be corrrect. 
+	// The corner Positions MUST be correct. 
 	//	That is, this  method doesn't check it.
-	public Room(Position uL, Position uR, Position bL, Position bR, int lev){	
-		this.upLeft = uL;
-		this.bottomLeft = bL;
-		this.upRight = uR;
-		this.bottomRight = bR;
-		this.level = lev;
-		this.walls = addWalls(uL,uR,bL,bR);
+	public Room(){	
+		int randomIndexULX = randomGenerator.nextInt(gridWidth-2)+1;
+		int randomIndexULY = randomGenerator.nextInt(gridHeight-2)+1;
+		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+		this.upLeft  = new Position(randomIndexULX,randomIndexULY);
+		System.out.println("this.upLeft = "+ this.upLeft.getX()+", "+this.upLeft.getY());
+		this.bottomRight = new Position(randomIndexBRX, randomIndexBRY);
+		this.bottomLeft = new Position(randomIndexULX, randomIndexBRY);
+		this.upRight = new Position(randomIndexBRX, randomIndexULY);
+		this.walls = addWalls(this.upLeft,this.upRight,this.bottomLeft,bottomRight);
 		this.doors = addDoors(this.walls);
 	}
 
+  // This fails right now.(I THINK) I broke this and I don't know how.
 	public ArrayList<Position> addDoors(ArrayList<Position> walls){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 		Position p,p2;
@@ -67,11 +74,13 @@ public class Room{
 		int numWalls = 1;
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 
+		System.out.println("uL = "+ uL.getX()+", "+uL.getY());
+
 		ini = uL.getPositionNW().getX();
 		fin = uR.getPositionNE().getX();
 		j = uL.getPositionNW().getY();
 		for(i = ini; i <= fin ; i++){
-			//System.out.println("Adding Wall "+numWalls+": "+i+", "+j);
+			System.out.println("Adding Wall "+numWalls+": "+i+", "+j);
 			numWalls++;
 			toReturn.add(new Position(i,j));
 		}
@@ -79,6 +88,7 @@ public class Room{
 		fin = bR.getPositionSE().getY();
 		j = uR.getPositionE().getX();
 		for(i = ini; i <= fin; i++){
+			System.out.println("Adding Wall "+numWalls+": "+j+", "+i);
 			numWalls++;
 			toReturn.add(new Position(j,i));
 		}
@@ -86,6 +96,7 @@ public class Room{
 		fin = bL.getPositionSW().getX();
 		j = bR.getPositionS().getY();
 		for(i = ini; i >= fin; i--){
+			System.out.println("Adding Wall "+numWalls+": "+i+", "+j);
 			numWalls++;
 			toReturn.add(new Position(i,j));
 		}
@@ -93,6 +104,7 @@ public class Room{
 		fin = uL.getPositionW().getY();
 		j = bL.getPositionW().getX();
 		for(i = ini; i >= fin; i--){
+			System.out.println("Adding Wall "+numWalls+": "+j+", "+i);
 			numWalls++;
 			toReturn.add(new Position(j,i));
 		}
@@ -163,10 +175,6 @@ public class Room{
 
 	public ArrayList<Position> getDoors(){
 		return this.doors;
-	}
-
-	public int getRoomLevel(){
-		return this.level;
 	}
 
 	public Position getRoomUpperLeft(){

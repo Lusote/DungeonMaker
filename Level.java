@@ -3,7 +3,7 @@ import java.util.Random;
 
 /*
 *	TODO:
-*		getTile();
+*		getTile(); TRYCATCH
 *		createRoom() Has to complete doors?
 */
 
@@ -19,21 +19,23 @@ public class Level{
     private static Random randomGenerator = new Random();
 
 
-	public Level(int i, int gH, int gW){
-		System.out.println("Creating level: "+i);
+	public Level(int ind, int gH, int gW){
+		System.out.println("Creating level: "+ind);
 		System.out.println("GH : "+gH);
 		System.out.println("GW : "+gW);
 		System.out.println("");
 		this.rooms = new ArrayList<Room>();
 		this.floorTiles = new ArrayList<Position>();
 		this.floorAndWallsTiles = new ArrayList<Position>();
-		this.index = i;
+		this.index = ind;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
-		this.grid = new Tile[gW][gH];
-		for(int in = 0; in <gW ;in++){
-		 	for(int j=0;j<gH;j++){
-		 		this.grid[in][j] = new Tile();
+		this.grid = new Tile[gW+1][gH+1];
+		System.out.println("fin I: "+gW);
+		System.out.println("fin J: "+gH);
+		for(int i = 0; i <=gW ;i++){
+		 	for(int j=0;j<=gH;j++){
+		 		this.grid[i][j] = new Tile();
 		 	}
 		 }
 	}
@@ -41,19 +43,17 @@ public class Level{
 	public Room createRoom(Tile upLeft, Tile upRight, Tile downLeft, Tile downRight){
 		try{
 			//Needs to complete doors.
-			Room r = new Room(upLeft.getPosition(), upRight.getPosition(),
-							downLeft.getPosition(), downRight.getPosition(),
-							this.getNumLevel());
+			Room r = new Room();
 			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
 			int numFloor = 1;
 			if(isValidR){
 				for(Position  p : r.getWalls()){
 					this.floorAndWallsTiles.add(p);					
 				}
-				int startX = upLeft.getPosition().getX();
-				int endX = downRight.getPosition().getX();
-				int startY = upLeft.getPosition().getY();
-				int endY = downRight.getPosition().getY();
+				int startX = r.getRoomUpperLeft().getX();
+				int endX = r.getRoomBottomRight().getX();
+				int startY = r.getRoomUpperLeft().getY();
+				int endY = r.getRoomBottomRight().getY();
 				Tile t;
 				for(int i = startX; i<=endX; i++){
 					for(int j=startY; j<=endY; j++){
@@ -101,10 +101,12 @@ public class Level{
 	}
 
 	// TODO: Return on fail?
+	// ADD TRYCATCH
+  // Use IsValidTile
 	public Tile getTile(Position p){
 		Tile toReturn = new Tile();
-		if( 0 <= p.getX() && p.getX() < this.gridWidth &&
-			0 <= p.getY() && p.getY() < this.gridHeight){
+		if( 0 <= p.getX() && p.getX() <= this.gridWidth &&
+			0 <= p.getY() && p.getY() <= this.gridHeight){
 				return this.grid[p.getX()][p.getY()];
 		}
 		else{
