@@ -43,8 +43,8 @@ public class Position{
 	// We can't pick a border and the adjacent file/column because the doors
 	// 	will need corridors.
 	public boolean isValidPositionForDoor(){
-		if( 3 <= this.getX() && this.getX() <= gridWidth-3 &&
-			3 <= this.getY() && this.getY() <= gridHeight-3 ){
+		if( 2 <= this.getX() && this.getX() <= gridWidth-2 &&
+			2 <= this.getY() && this.getY() <= gridHeight-2 ){
 			return true;
 		}
 		return false;
