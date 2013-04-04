@@ -12,23 +12,20 @@ public class Room{
 	private Position bottomLeft;
 	private Position upRight;
 	private Position bottomRight;
-  private static Random randomGenerator = new Random();
-  private ArrayList<Position> doors = new ArrayList<Position>();
-  private ArrayList<Position> walls = new ArrayList<Position>();
+	private static Random randomGenerator = new Random();
+	private ArrayList<Position> doors = new ArrayList<Position>();
+	private ArrayList<Position> walls = new ArrayList<Position>();
 
 	private static int gridWidth = 79;
 	private static int gridHeight = 24;	
 
 
-	// The corner Positions MUST be correct. 
-	//	That is, this  method doesn't check it.
 	public Room(){	
 		int randomIndexULX = randomGenerator.nextInt(gridWidth-3)+3;
 		int randomIndexULY = randomGenerator.nextInt(gridHeight-3)+3;
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 		this.upLeft  = new Position(randomIndexULX,randomIndexULY);
-		System.out.println("this.upLeft = "+ this.upLeft.getX()+", "+this.upLeft.getY());
 		this.bottomRight = new Position(randomIndexBRX, randomIndexBRY);
 		this.bottomLeft = new Position(randomIndexULX, randomIndexBRY);
 		this.upRight = new Position(randomIndexBRX, randomIndexULY);
@@ -36,7 +33,6 @@ public class Room{
 		this.doors = addDoors(this.walls);
 	}
 
-  // This fails right now.(I THINK) I broke this and I don't know how.
 	public ArrayList<Position> addDoors(ArrayList<Position> walls){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 		Position p,p2;
@@ -51,12 +47,16 @@ public class Room{
 				 walls.contains(p.getPositionW()))				 
 			  ){
 				if(toReturn.size()==0){
-					toReturn.add(walls.get(randomIndex));
+					if(walls.get(randomIndex).isValidPositionForDoor()){
+						toReturn.add(walls.get(randomIndex));
+					}
 				}
 				else{
 					p2 = toReturn.get(0);
 					if(!p2.getFourNeighbours().contains(p)){
-						toReturn.add(walls.get(randomIndex));
+						if(walls.get(randomIndex).isValidPositionForDoor()){
+							toReturn.add(walls.get(randomIndex));
+						}
 					}
 				}
 			}

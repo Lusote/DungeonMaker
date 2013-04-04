@@ -3,7 +3,6 @@ import java.util.Random;
 
 /*
 *	TODO:
-*		getTile(); TRYCATCH
 *		createRoom() Has to complete doors?
 */
 
@@ -20,10 +19,6 @@ public class Level{
 
 
 	public Level(int ind, int gH, int gW){
-		System.out.println("Creating level: "+ind);
-		System.out.println("GH : "+gH);
-		System.out.println("GW : "+gW);
-		System.out.println("");
 		this.rooms = new ArrayList<Room>();
 		this.floorTiles = new ArrayList<Position>();
 		this.floorAndWallsTiles = new ArrayList<Position>();
@@ -31,8 +26,6 @@ public class Level{
 		this.gridHeight = gH;
 		this.gridWidth = gW;
 		this.grid = new Tile[gW+1][gH+1];
-		System.out.println("fin I: "+gW);
-		System.out.println("fin J: "+gH);
 		for(int i = 0; i <=gW ;i++){
 		 	for(int j=0;j<=gH;j++){
 		 		this.grid[i][j] = new Tile();
@@ -59,11 +52,13 @@ public class Level{
 					for(int j=startY; j<=endY; j++){
 						Position p = new Position(i,j);
 						t = this.getTile(p);
-						t.setSymbol('.');
-						this.floorTiles.add(p);
-						System.out.println("Adding to floorTiles "+numFloor+": "+p.getX()+", "+p.getY());
-						numFloor++;
-						this.floorAndWallsTiles.add(p);
+						if(t!=null){
+							t.setSymbol('.');
+							this.floorTiles.add(p);
+							System.out.println("Adding to floorTiles "+numFloor+": "+p.getX()+", "+p.getY());
+							numFloor++;
+							this.floorAndWallsTiles.add(p);
+						}
 					}
 				}
 				this.floorAndWallsTiles.addAll(r.getWalls());
@@ -100,19 +95,12 @@ public class Level{
 		return this.floorAndWallsTiles;
 	}
 
-	// TODO: Return on fail?
-	// ADD TRYCATCH
-  // Use IsValidTile
+	public ArrayList<Position> getFloorTiles(){
+		return this.floorTiles;
+	}
+
 	public Tile getTile(Position p){
-		Tile toReturn = new Tile();
-		if( 0 <= p.getX() && p.getX() <= this.gridWidth &&
-			0 <= p.getY() && p.getY() <= this.gridHeight){
-				return this.grid[p.getX()][p.getY()];
-		}
-		else{
-			System.out.println("ERROR: Requesting invalid tile.");
-			return null;
-		}
+		return this.grid[p.getX()][p.getY()];
 	}
 
 	public int getNumLevel(){
@@ -126,20 +114,33 @@ public class Level{
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position bR = new Position(randomIndexBRX, randomIndexBRY);
-		Position bL = new Position(randomIndexULX, randomIndexBRY);
 		Position uR = new Position(randomIndexBRX, randomIndexULY);
+		Position bL = new Position(randomIndexULX, randomIndexBRY);
+		Position bR = new Position(randomIndexBRX, randomIndexBRY);
+		while(!uL.isValidPositionForRoom() ||
+			!uR.isValidPositionForRoom() ||
+			!bL.isValidPositionForRoom() ||
+			!bR.isValidPositionForRoom()){
+				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
+				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
+				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+				uL = new Position(randomIndexULX,randomIndexULY);
+				uR = new Position(randomIndexBRX, randomIndexULY);
+				bL = new Position(randomIndexULX, randomIndexBRY);
+				bR = new Position(randomIndexBRX, randomIndexBRY);
+		}
 
-			Room r = createRoom(getTile(uL), getTile(uR), getTile(bL), getTile(bR)
-					);
+		Room r = createRoom(getTile(uL), getTile(uR), getTile(bL), getTile(bR));
 		return 1;
 	}
 
-	// Returns a random empty floor tile (allegedly)
-	public Position getRandomValidTile(Level l){
+	// Gets a random empty floor Tile from floorTiles
+	public Position getRandomFloorTile(Level l){
 	 	Random randomGen = new Random();
-	 	int indexValidTile = randomGen.nextInt(floorTiles.size());
-	 	Position posTileReturn = floorTiles.get(indexValidTile);
+	 	int indexValidTile = randomGen.nextInt(l.getFloorTiles().size()-1);
+	 	Position posTileReturn = l.getFloorTiles().get(indexValidTile);
+	 	// If is not empty, get another random floor tile
 	 	while(!this.getTile(posTileReturn).isTileEmpty()){
 	 		indexValidTile = randomGen.nextInt(floorTiles.size());
 	 		posTileReturn = floorTiles.get(indexValidTile);
@@ -148,13 +149,13 @@ public class Level{
 	 }
 
 	public void setStairsUp(){
-		Position stairsUp = this.getRandomValidTile(this);
+		Position stairsUp = this.getRandomFloorTile(this);
 		this.getTile(stairsUp).setDistStairsUp(0);
 		this.getTile(stairsUp).setSymbol('<');
 	}
 
 	public void setStairsDown(){
-		Position stairsDown = this.getRandomValidTile(this);
+		Position stairsDown = this.getRandomFloorTile(this);
 		this.getTile(stairsDown).setDistStairsUp(0);
 		this.getTile(stairsDown).setSymbol('>');
 	}
