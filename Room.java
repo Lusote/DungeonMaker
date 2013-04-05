@@ -20,15 +20,15 @@ public class Room{
 	private static int gridHeight = 24;	
 
 
-	public Room(){	
+	public Room(Position uL, Position bR){	
 		int randomIndexULX = randomGenerator.nextInt(gridWidth-3)+3;
 		int randomIndexULY = randomGenerator.nextInt(gridHeight-3)+3;
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-		this.upLeft  = new Position(randomIndexULX,randomIndexULY);
-		this.bottomRight = new Position(randomIndexBRX, randomIndexBRY);
-		this.bottomLeft = new Position(randomIndexULX, randomIndexBRY);
-		this.upRight = new Position(randomIndexBRX, randomIndexULY);
+		this.upLeft  = uL;
+		this.bottomRight = bR;
+		this.bottomLeft = new Position(uL.getX(),bR.getY());
+		this.upRight = new Position(bR.getX(),uL.getY());
 		this.walls = this.upLeft.getSquare(bottomRight);
 		this.doors = addDoors(this.walls);
 	}
@@ -64,7 +64,7 @@ public class Room{
 		}
 		return toReturn;
 	}
-	
+
 	// More efficient?
 	public boolean isValidRoom(ArrayList<Position> floorAndWallsUsed){
 		boolean ret = false;

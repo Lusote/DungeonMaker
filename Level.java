@@ -33,10 +33,10 @@ public class Level{
 		 }
 	}
 
-	public Room createRoom(Tile upLeft, Tile upRight, Tile downLeft, Tile downRight){
+	public Room createRoom(Position uL, Position bR){
 		try{
 			//Needs to complete doors.
-			Room r = new Room();
+			Room r = new Room(uL, bR);
 			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
 			int numFloor = 1;
 			if(isValidR){
@@ -55,7 +55,8 @@ public class Level{
 						if(t!=null){
 							t.setSymbol('.');
 							this.floorTiles.add(p);
-							System.out.println("Adding to floorTiles "+numFloor+": "+p.getX()+", "+p.getY());
+							System.out.println("Adding to floorTiles "+
+								numFloor+": "+p.getX()+", "+p.getY());
 							numFloor++;
 							this.floorAndWallsTiles.add(p);
 						}
@@ -114,25 +115,20 @@ public class Level{
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position uR = new Position(randomIndexBRX, randomIndexULY);
-		Position bL = new Position(randomIndexULX, randomIndexBRY);
 		Position bR = new Position(randomIndexBRX, randomIndexBRY);
 		while(!uL.isValidPositionForRoom() ||
-			!uR.isValidPositionForRoom() ||
-			!bL.isValidPositionForRoom() ||
 			!bR.isValidPositionForRoom()){
 				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
 				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
 				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 				uL = new Position(randomIndexULX,randomIndexULY);
-				uR = new Position(randomIndexBRX, randomIndexULY);
-				bL = new Position(randomIndexULX, randomIndexBRY);
 				bR = new Position(randomIndexBRX, randomIndexBRY);
 		}
 
-		Room r = createRoom(getTile(uL), getTile(uR), getTile(bL), getTile(bR));
+		Room r = createRoom(uL, bR);
 	}
+
 
 	// Gets a random empty floor Tile from floorTiles
 	public Position getRandomFloorTile(Level l){
