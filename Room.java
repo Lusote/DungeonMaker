@@ -64,53 +64,7 @@ public class Room{
 		}
 		return toReturn;
 	}
-
-	// I need a more efficient way. For now, this will do the trick.
-	public ArrayList<Position> addWalls(Position uL,Position uR,Position bL,Position bR){
-		int i;
-		int ini;
-		int fin;
-		int j;
-		int numWalls = 1;
-		ArrayList<Position> toReturn = new ArrayList<Position>();
-
-		System.out.println("uL = "+ uL.getX()+", "+uL.getY());
-
-		ini = uL.getPositionNW().getX();
-		fin = uR.getPositionNE().getX();
-		j = uL.getPositionNW().getY();
-		for(i = ini; i <= fin ; i++){
-			System.out.println("Adding Wall "+numWalls+": "+i+", "+j);
-			numWalls++;
-			toReturn.add(new Position(i,j));
-		}
-		ini = uR.getPositionE().getY();
-		fin = bR.getPositionSE().getY();
-		j = uR.getPositionE().getX();
-		for(i = ini; i <= fin; i++){
-			System.out.println("Adding Wall "+numWalls+": "+j+", "+i);
-			numWalls++;
-			toReturn.add(new Position(j,i));
-		}
-		ini = bR.getPositionS().getX();
-		fin = bL.getPositionSW().getX();
-		j = bR.getPositionS().getY();
-		for(i = ini; i >= fin; i--){
-			System.out.println("Adding Wall "+numWalls+": "+i+", "+j);
-			numWalls++;
-			toReturn.add(new Position(i,j));
-		}
-		ini = bL.getPositionW().getY();
-		fin = uL.getPositionW().getY();
-		j = bL.getPositionW().getX();
-		for(i = ini; i >= fin; i--){
-			System.out.println("Adding Wall "+numWalls+": "+j+", "+i);
-			numWalls++;
-			toReturn.add(new Position(j,i));
-		}
-		return toReturn;
-	}
-
+	
 	// More efficient?
 	public boolean isValidRoom(ArrayList<Position> floorAndWallsUsed){
 		boolean ret = false;
