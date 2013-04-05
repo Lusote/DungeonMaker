@@ -107,7 +107,7 @@ public class Level{
 		return this.index;
 	}
 
-	public int printRandomRoom(){
+	public void addRandomRoom(){
 
 		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
 		int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
@@ -132,7 +132,6 @@ public class Level{
 		}
 
 		Room r = createRoom(getTile(uL), getTile(uR), getTile(bL), getTile(bR));
-		return 1;
 	}
 
 	// Gets a random empty floor Tile from floorTiles
