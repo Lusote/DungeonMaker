@@ -81,7 +81,50 @@ public class Position{
 		toReturn.add(this.getPositionSE());
 		toReturn.add(this.getPositionSW());
 		return toReturn;
+	}
 
+	public ArrayList<Position> getSquare(Position uL, Position bR){
+		int i;
+		int ini;
+		int fin;
+		int j;
+		int numWalls=1;
+		Position uR = new Position(bR.getX(), uL.getY());
+		Position bL = new Position(uL.getX(), bR.getY());
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		ini = uL.getPositionNW().getX();
+		fin = uR.getPositionNE().getX();
+		j = uL.getPositionNW().getY();
+		for(i = ini; i <= fin ; i++){
+			//System.out.println("Adding square "+numWalls+": "+i+", "+j);
+			numWalls++;
+			toReturn.add(new Position(i,j));
+		}
+		ini = uR.getPositionE().getY();
+		fin = bR.getPositionSE().getY();
+		j = uR.getPositionE().getX();
+		for(i = ini; i <= fin; i++){
+			//System.out.println("Adding square "+numWalls+": "+j+", "+i);
+			numWalls++;
+			toReturn.add(new Position(j,i));
+		}
+		ini = bR.getPositionS().getX();
+		fin = bL.getPositionSW().getX();
+		j = bR.getPositionS().getY();
+		for(i = ini; i >= fin; i--){
+			//System.out.println("Adding square "+numWalls+": "+i+", "+j);
+			numWalls++;
+			toReturn.add(new Position(i,j));
+		}
+		ini = bL.getPositionW().getY();
+		fin = uL.getPositionW().getY();
+		j = bL.getPositionW().getX();
+		for(i = ini; i >= fin; i--){
+			//System.out.println("Adding square "+numWalls+": "+j+", "+i);
+			numWalls++;
+			toReturn.add(new Position(j,i));
+		}
+		return toReturn;
 	}
 
 	public Position getPositionNW(){
