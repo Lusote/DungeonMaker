@@ -29,7 +29,7 @@ public class Room{
 		this.bottomRight = new Position(randomIndexBRX, randomIndexBRY);
 		this.bottomLeft = new Position(randomIndexULX, randomIndexBRY);
 		this.upRight = new Position(randomIndexBRX, randomIndexULY);
-		this.walls = addWalls(this.upLeft,this.upRight,this.bottomLeft,bottomRight);
+		this.walls = this.upLeft.getSquare(bottomRight);
 		this.doors = addDoors(this.walls);
 	}
 

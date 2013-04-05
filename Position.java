@@ -83,12 +83,13 @@ public class Position{
 		return toReturn;
 	}
 
-	public ArrayList<Position> getSquare(Position uL, Position bR){
+	public ArrayList<Position> getSquare(Position bR){
 		int i;
 		int ini;
 		int fin;
 		int j;
 		int numWalls=1;
+		Position uL = this;
 		Position uR = new Position(bR.getX(), uL.getY());
 		Position bL = new Position(uL.getX(), bR.getY());
 		ArrayList<Position> toReturn = new ArrayList<Position>();
