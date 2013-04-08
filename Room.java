@@ -16,13 +16,10 @@ public class Room{
 	private ArrayList<Position> doors = new ArrayList<Position>();
 	private ArrayList<Position> walls = new ArrayList<Position>();
 
-	private static int gridWidth = 79;
-	private static int gridHeight = 24;	
 
-
-	public Room(Position uL, Position bR){	
-		int randomIndexULX = randomGenerator.nextInt(gridWidth-3)+3;
-		int randomIndexULY = randomGenerator.nextInt(gridHeight-3)+3;
+	public Room(Position uL, Position bR, int gridH, int gridW){	
+		int randomIndexULX = randomGenerator.nextInt(gridW-3)+3;
+		int randomIndexULY = randomGenerator.nextInt(gridH-3)+3;
 		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
 		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
 		this.upLeft  = uL;

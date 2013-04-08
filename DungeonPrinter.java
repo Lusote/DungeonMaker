@@ -60,7 +60,7 @@ public class DungeonPrinter{
 					System.out.println("Initializing... Not really.");
 			}
 			if(dir.isLeftArrow()){
-				testDungeon.getLevel(0).addRandomRoom();
+				testDungeon.getLevel(0).createRoom();
 			}
 			if(dir.code == CharKey.r){
 				csi.cls();
