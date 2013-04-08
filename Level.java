@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Random;
 
 /*
@@ -13,15 +13,15 @@ public class Level{
 	private int gridWidth;
 	private Tile[][] grid; 
 	private ArrayList<Room> rooms;
-	private ArrayList<Position> floorTiles;
-	private ArrayList<Position> floorAndWallsTiles;
+	private Set<Position> floorTiles;
+	private Set<Position> floorAndWallsTiles;
     private static Random randomGenerator = new Random();
 
 
 	public Level(int ind, int gH, int gW){
 		this.rooms = new ArrayList<Room>();
-		this.floorTiles = new ArrayList<Position>();
-		this.floorAndWallsTiles = new ArrayList<Position>();
+		this.floorTiles = new HashSet<Position>();
+		this.floorAndWallsTiles = new HashSet<Position>();
 		this.index = ind;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
@@ -36,8 +36,7 @@ public class Level{
 	public Room createRoom(){
 		ArrayList<Position> roomPos = getRoomPositions();
 		try{
-			Room r = new Room(roomPos.get(0),
-								roomPos.get(1), gridHeight, gridWidth);
+			Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
 			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
 			int numFloor = 1;
 			if(isValidR){
@@ -115,11 +114,11 @@ public class Level{
 		return this.rooms;
 	}	
 
-	public ArrayList<Position> getRoomAndWallTiles(){
+	public Set<Position> getRoomAndWallTiles(){
 		return this.floorAndWallsTiles;
 	}
 
-	public ArrayList<Position> getFloorTiles(){
+	public Set<Position> getFloorTiles(){
 		return this.floorTiles;
 	}
 
@@ -132,26 +131,29 @@ public class Level{
 	}
 
 	// Gets a random empty floor Tile from floorTiles
-	public Position getRandomFloorTile(Level l){
-	 	Random randomGen = new Random();
-	 	int indexValidTile = randomGen.nextInt(l.getFloorTiles().size()-1);
-	 	Position posTileReturn = l.getFloorTiles().get(indexValidTile);
-	 	// If is not empty, get another random floor tile
-	 	while(!this.getTile(posTileReturn).isTileEmpty()){
-	 		indexValidTile = randomGen.nextInt(floorTiles.size());
-	 		posTileReturn = floorTiles.get(indexValidTile);
-	 	}
-	 	return posTileReturn;
+	public Position getRandomFloorPosition(Level l){
+		int size = l.getFloorTiles().size();
+		int item = new Random().nextInt(size);
+		int i = 0;
+		for(Position p : l.getFloorTiles()){
+			if (i == item){
+				if(!this.getTile(p).isTileEmpty()){
+					return p;
+				}
+				i=i++;
+			}
+		}
+		return null;
 	 }
 
 	public void setStairsUp(){
-		Position stairsUp = this.getRandomFloorTile(this);
+		Position stairsUp = this.getRandomFloorPosition(this);
 		this.getTile(stairsUp).setDistStairsUp(0);
 		this.getTile(stairsUp).setSymbol('<');
 	}
 
 	public void setStairsDown(){
-		Position stairsDown = this.getRandomFloorTile(this);
+		Position stairsDown = this.getRandomFloorPosition(this);
 		this.getTile(stairsDown).setDistStairsUp(0);
 		this.getTile(stairsDown).setSymbol('>');
 	}

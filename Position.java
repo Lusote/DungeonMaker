@@ -32,7 +32,7 @@ public class Position{
 
 	@Override
 	public int hashCode(){
-		final int prime = 5;
+		final int prime = 41;
 		int result =1;
 		result = result + this.getX() * prime;
 		result = result + this.getY() * prime;

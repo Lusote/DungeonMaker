@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
    
 /*
 *	TODO:
@@ -63,7 +62,7 @@ public class Room{
 	}
 
 	// More efficient?
-	public boolean isValidRoom(ArrayList<Position> floorAndWallsUsed){
+	public boolean isValidRoom(Set<Position> floorAndWallsUsed){
 		boolean ret = false;
 		if(this.getRoomUpperLeft().isValidPositionForRoom() &&
 			this.getRoomUpperRight().isValidPositionForRoom() &&
@@ -77,9 +76,9 @@ public class Room{
 	}
 
 	// Needs a better way. But works.
-	public boolean isRoomOverlapping(ArrayList<Position> floorAndWallsUsed){
+	public boolean isRoomOverlapping(Set<Position> floorAndWallsUsed){
 		int ini, fin, i, j;
-		ArrayList<Position> borderFloor = new ArrayList<Position>();
+		Set<Position> borderFloor = new HashSet<Position>();
 
 		ini = this.getRoomUpperLeft().getX();
 		fin = this.getRoomUpperRight().getX();
