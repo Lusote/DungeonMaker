@@ -30,6 +30,15 @@ public class Position{
 	    else return false;
 	}
 
+	@Override
+	public int hashCode(){
+		final int prime = 5;
+		int result =1;
+		result = result + this.getX() * prime;
+		result = result + this.getY() * prime;
+		return result;
+	}
+
 	// Only checks map limits (in general)
 	public boolean isValidPosition(){
 		if( 0 <= this.getX() && this.getX() <= gridWidth &&

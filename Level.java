@@ -34,24 +34,10 @@ public class Level{
 	}
 
 	public Room createRoom(){
-
-		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-		int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position bR = new Position(randomIndexBRX, randomIndexBRY);
-		while(!uL.isValidPositionForRoom() ||
-			!bR.isValidPositionForRoom()){
-				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-				uL = new Position(randomIndexULX,randomIndexULY);
-				bR = new Position(randomIndexBRX, randomIndexBRY);
-		}
+		ArrayList<Position> roomPos = getRoomPositions();
 		try{
-			Room r = new Room(uL, bR, gridHeight, gridWidth);
+			Room r = new Room(roomPos.get(0),
+								roomPos.get(1), gridHeight, gridWidth);
 			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
 			int numFloor = 1;
 			if(isValidR){
@@ -95,6 +81,28 @@ public class Level{
 		}
 	}
 
+	public ArrayList<Position> getRoomPositions(){
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
+		int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
+		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+		Position uL = new Position(randomIndexULX,randomIndexULY);
+		Position bR = new Position(randomIndexBRX, randomIndexBRY);
+		while(!uL.isValidPositionForRoom() ||
+			!bR.isValidPositionForRoom()){
+				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
+				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
+				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+				uL = new Position(randomIndexULX,randomIndexULY);
+				bR = new Position(randomIndexBRX, randomIndexBRY);
+		}
+		toReturn.add(uL);
+		toReturn.add(bR);
+		return toReturn;
+	}
+
 	public void addRoom(Room r){
 		this.rooms.add(r);
 	}
@@ -122,28 +130,6 @@ public class Level{
 	public int getNumLevel(){
 		return this.index;
 	}
-
-/*	public void addRandomRoom(){
-
-		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-		int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position bR = new Position(randomIndexBRX, randomIndexBRY);
-		while(!uL.isValidPositionForRoom() ||
-			!bR.isValidPositionForRoom()){
-				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-				uL = new Position(randomIndexULX,randomIndexULY);
-				bR = new Position(randomIndexBRX, randomIndexBRY);
-		}
-
-		Room r = createRoom(uL, bR);
-	}*/
-
 
 	// Gets a random empty floor Tile from floorTiles
 	public Position getRandomFloorTile(Level l){
