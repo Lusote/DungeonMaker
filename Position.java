@@ -99,6 +99,17 @@ public class Position{
 		return toReturn;
 	}
 
+	public ArrayList<Position> getSolidSquare(Position bR){
+		Position uL = this;
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		for(int i = uL.getX(); i <= bR.getX(); i++){
+			for(int j = uL.getY(); j <= bR.getY();j ++){
+				toReturn.add(new Position(i,j));
+			}
+		}
+		return toReturn;
+	}
+
 	public ArrayList<Position> getSquare(Position bR){
 		int i;
 		int ini;

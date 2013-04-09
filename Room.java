@@ -61,7 +61,7 @@ public class Room{
 		return toReturn;
 	}
 
-	// More efficient?
+	/* / More efficient?
 	public boolean isValidRoom(Set<Position> floorAndWallsUsed){
 		boolean ret = false;
 		if(this.getRoomUpperLeft().isValidPositionForRoom() &&
@@ -117,6 +117,21 @@ public class Room{
 			}
 		}
 		return false;
+	}*/
+
+	public ArrayList<Position> getFloor(){
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		int startX = this.getRoomUpperLeft().getX();
+		int endX   = this.getRoomBottomRight().getX();
+		int startY = this.getRoomUpperLeft().getY();
+		int endY   = this.getRoomBottomRight().getY();
+		Tile t;
+		for(int i = startX; i<=endX; i++){
+			for(int j=startY; j<=endY; j++){
+				toReturn.add(new Position(i,j));
+			}
+		}
+		return toReturn;
 	}
 
 	public ArrayList<Position> getWalls(){

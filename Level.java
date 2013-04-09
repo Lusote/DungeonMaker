@@ -12,15 +12,15 @@ public class Level{
 	private int gridWidth;
 	private Tile[][] grid; 
 	private ArrayList<Room> rooms;
-	private Set<Position> floorTiles;
-	private Set<Position> floorAndWallsTiles;
+	private Set<Position> floorPositions;
+	private Set<Position> floorAndWallsPositions;
     private static Random randomGenerator = new Random();
 
 
 	public Level(int ind, int gH, int gW){
 		this.rooms = new ArrayList<Room>();
-		this.floorTiles = new HashSet<Position>();
-		this.floorAndWallsTiles = new HashSet<Position>();
+		this.floorPositions = new HashSet<Position>();
+		this.floorAndWallsPositions = new HashSet<Position>();
 		this.index = ind;
 		this.gridHeight = gH;
 		this.gridWidth = gW;
@@ -33,14 +33,41 @@ public class Level{
 	}
 
 	public Room createRoom(){
+		Tile t;
 		ArrayList<Position> roomPos = getRoomPositions();
+		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE());
+		for(Position p : roomWallsAndFloor){
+			if(p.isPositionUsed(this.getRoomAndWallsPositions())
+				){
+				System.out.println("ERROR Creating Room: Position already used.");
+				return null;
+			}
+		}
+		// At this point, the Room is valid.
+		Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
+		for(Position p : r.getFloor()){
+			t = getTile(p);
+			if(t!=null){
+				t.setSymbol('.');
+				/*System.out.println("Adding to floorTiles "+
+				numFloor+": "+p.getX()+", "+p.getY());
+				numFloor++;*/
+				addFloorPosition(p);
+				addRoomOrWallsPosition(p);
+			}
+		}
+		return r;
+	}
+
+
+/*
 		try{
 			Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
-			boolean isValidR = r.isValidRoom(this.floorAndWallsTiles);
+			boolean isValidR = r.isValidRoom(this.floorAndWallsPositions);
 			int numFloor = 1;
 			if(isValidR){
 				for(Position  p : r.getWalls()){
-					this.floorAndWallsTiles.add(p);					
+					this.floorAndWallsPositions.add(p);					
 				}
 				int startX = r.getRoomUpperLeft().getX();
 				int endX   = r.getRoomBottomRight().getX();
@@ -57,12 +84,12 @@ public class Level{
 							System.out.println("Adding to floorTiles "+
 								numFloor+": "+p.getX()+", "+p.getY());
 							numFloor++;
-							this.floorAndWallsTiles.add(p);
+							this.floorAndWallsPositions.add(p);
 						}
 					}
 				}
-				this.floorAndWallsTiles.addAll(r.getWalls());
-				this.floorAndWallsTiles.addAll(r.getDoors());
+				this.floorAndWallsPositions.addAll(r.getWalls());
+				this.floorAndWallsPositions.addAll(r.getDoors());
 				for(Position p : r.getDoors()){
 					this.getTile(p).setSymbol('.');
 				}
@@ -76,9 +103,9 @@ public class Level{
 		catch(Exception e){
 			System.out.println("Ex: ERROR creating room. Invalid Tile.");
 			return null;
-		}
-	}
+		}*/
 
+	// Returns uL and bR
 	public ArrayList<Position> getRoomPositions(){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
@@ -113,12 +140,20 @@ public class Level{
 		return this.rooms;
 	}	
 
-	public Set<Position> getRoomAndWallTiles(){
-		return this.floorAndWallsTiles;
+	public Set<Position> getRoomAndWallsPositions(){
+		return this.floorAndWallsPositions;
 	}
 
-	public Set<Position> getFloorTiles(){
-		return this.floorTiles;
+	public void addRoomOrWallsPosition(Position p){
+		this.floorAndWallsPositions.add(p);
+	}
+
+	public Set<Position> getFloorPositions(){
+		return this.floorPositions;
+	}
+
+	public void addFloorPosition(Position p){
+		this.floorPositions.add(p);
 	}
 
 	public Tile getTile(Position p){
@@ -131,10 +166,10 @@ public class Level{
 
 	// Gets a random empty floor Tile from floorTiles
 	public Position getRandomFloorPosition(Level l){
-		int size = l.getFloorTiles().size();
+		int size = l.getFloorPositions().size();
 		int item = new Random().nextInt(size);
 		int i = 0;
-		for(Position p : l.getFloorTiles()){
+		for(Position p : l.getFloorPositions()){
 			if (i == item){
 				if(!this.getTile(p).isTileEmpty()){
 					return p;

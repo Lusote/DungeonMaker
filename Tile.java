@@ -79,7 +79,7 @@ public class Tile{
 		this.thingsOnTile.add(thing);
 	}
 
-	public ArrayList getThingsOnTile(){
+	public ArrayList<Object> getThingsOnTile(){
 		return this.thingsOnTile;
 	}
 
