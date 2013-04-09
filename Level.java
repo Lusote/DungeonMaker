@@ -35,7 +35,7 @@ public class Level{
 	public Room createRoom(){
 		Tile t;
 		ArrayList<Position> roomPos = getRoomPositions();
-		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE());
+		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE());
 		for(Position p : roomWallsAndFloor){
 			if(p.isPositionUsed(this.getRoomAndWallsPositions())
 				){
@@ -46,6 +46,8 @@ public class Level{
 		// At this point, the Room is valid.
 		Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
 		for(Position p : r.getFloor()){
+			//Removing possible duplicates due to addDoors()
+			r.getWalls().remove(p);
 			t = getTile(p);
 			if(t!=null){
 				t.setSymbol('.');
@@ -56,54 +58,14 @@ public class Level{
 				addRoomOrWallsPosition(p);
 			}
 		}
+		this.floorAndWallsPositions.addAll(r.getWalls());
+		this.floorAndWallsPositions.addAll(r.getDoors());
+		for(Position p : r.getDoors()){
+			this.getTile(p).setSymbol('.');
+		}
+		addRoom(r);
 		return r;
 	}
-
-
-/*
-		try{
-			Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
-			boolean isValidR = r.isValidRoom(this.floorAndWallsPositions);
-			int numFloor = 1;
-			if(isValidR){
-				for(Position  p : r.getWalls()){
-					this.floorAndWallsPositions.add(p);					
-				}
-				int startX = r.getRoomUpperLeft().getX();
-				int endX   = r.getRoomBottomRight().getX();
-				int startY = r.getRoomUpperLeft().getY();
-				int endY   = r.getRoomBottomRight().getY();
-				Tile t;
-				for(int i = startX; i<=endX; i++){
-					for(int j=startY; j<=endY; j++){
-						Position p = new Position(i,j);
-						t = this.getTile(p);
-						if(t!=null){
-							t.setSymbol('.');
-							this.floorTiles.add(p);
-							System.out.println("Adding to floorTiles "+
-								numFloor+": "+p.getX()+", "+p.getY());
-							numFloor++;
-							this.floorAndWallsPositions.add(p);
-						}
-					}
-				}
-				this.floorAndWallsPositions.addAll(r.getWalls());
-				this.floorAndWallsPositions.addAll(r.getDoors());
-				for(Position p : r.getDoors()){
-					this.getTile(p).setSymbol('.');
-				}
-				return r;
-			}
-			else {
-				System.out.println("Invalid room.");
-				return null;
-			}
-		}
-		catch(Exception e){
-			System.out.println("Ex: ERROR creating room. Invalid Tile.");
-			return null;
-		}*/
 
 	// Returns uL and bR
 	public ArrayList<Position> getRoomPositions(){
@@ -130,6 +92,10 @@ public class Level{
 
 	public void addRoom(Room r){
 		this.rooms.add(r);
+	}
+
+	public int getNumRooms(){
+		return this.getRooms().size();
 	}
 
 	public Tile[][] getGrid(){

@@ -62,10 +62,18 @@ public class DungeonPrinter{
 			if(dir.isLeftArrow()){
 				testDungeon.getLevel(0).createRoom();
 			}
+			if(dir.isRightArrow()){
+				while(testDungeon.getLevel(0).getNumRooms()!=10){
+					testDungeon.getLevel(0).createRoom();
+				}
+			}
 			if(dir.code == CharKey.r){
 				csi.cls();
 				csi.refresh();
 				System.out.println("Refreshing.");
+			}
+			if(dir.code == CharKey.n){
+				testDungeon = new Dungeon();
 			}
 		}
 		System.exit(0);

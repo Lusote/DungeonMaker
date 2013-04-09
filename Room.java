@@ -16,17 +16,22 @@ public class Room{
 	private ArrayList<Position> walls = new ArrayList<Position>();
 
 
-	public Room(Position uL, Position bR, int gridH, int gridW){	
-		int randomIndexULX = randomGenerator.nextInt(gridW-3)+3;
-		int randomIndexULY = randomGenerator.nextInt(gridH-3)+3;
-		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+	public Room(Position uL, Position bR, int gridH, int gridW){
 		this.upLeft  = uL;
 		this.bottomRight = bR;
 		this.bottomLeft = new Position(uL.getX(),bR.getY());
 		this.upRight = new Position(bR.getX(),uL.getY());
-		this.walls = this.upLeft.getSquare(bottomRight);
-		this.doors = addDoors(this.walls);
+		this.doors = addDoors(this.upLeft.getSquare(bottomRight));
+		this.walls = addWalls();
+	}
+
+	public ArrayList<Position> addWalls(){
+		ArrayList<Position> toReturn = new ArrayList<Position>();
+		toReturn.addAll(this.upLeft.getSquare(bottomRight));
+		for(Position p : this.getDoors()){
+			toReturn.addAll(p.getEightNeighbours());
+		}
+		return toReturn;
 	}
 
 	public ArrayList<Position> addDoors(ArrayList<Position> walls){
@@ -35,6 +40,8 @@ public class Room{
 		int randomIndex = randomGenerator.nextInt(walls.size()-1);
 		while(toReturn.size()!=2){
 			p = walls.get(randomIndex);
+			// Is valid and it's not a corner
+			//System.out.println("Checking for corners...");
 			if(p.isValidPositionForDoor()	  &&
 				(walls.contains(p.getPositionN()) &&
 				 walls.contains(p.getPositionS())) 
@@ -44,13 +51,16 @@ public class Room{
 			  ){
 				if(toReturn.size()==0){
 					if(walls.get(randomIndex).isValidPositionForDoor()){
+						//System.out.println("We got a first door.");
 						toReturn.add(walls.get(randomIndex));
 					}
 				}
 				else{
+					// Avoids having two doors together.
 					p2 = toReturn.get(0);
-					if(!p2.getFourNeighbours().contains(p)){
+					if(!p2.getFourNeighbours().contains(p) && walls.get(randomIndex)!=p2){
 						if(walls.get(randomIndex).isValidPositionForDoor()){
+							//System.out.println("We got a second door.");
 							toReturn.add(walls.get(randomIndex));
 						}
 					}
@@ -60,64 +70,6 @@ public class Room{
 		}
 		return toReturn;
 	}
-
-	/* / More efficient?
-	public boolean isValidRoom(Set<Position> floorAndWallsUsed){
-		boolean ret = false;
-		if(this.getRoomUpperLeft().isValidPositionForRoom() &&
-			this.getRoomUpperRight().isValidPositionForRoom() &&
-			this.getRoomBottomLeft().isValidPositionForRoom() &&
-			this.getRoomBottomRight().isValidPositionForRoom() &&
-			!this.isRoomOverlapping(floorAndWallsUsed)
-			){
-				ret = true;
-		}
-		return ret;
-	}
-
-	// Needs a better way. But works.
-	public boolean isRoomOverlapping(Set<Position> floorAndWallsUsed){
-		int ini, fin, i, j;
-		Set<Position> borderFloor = new HashSet<Position>();
-
-		ini = this.getRoomUpperLeft().getX();
-		fin = this.getRoomUpperRight().getX();
-		j   = this.getRoomUpperLeft().getY();
-		for(i = ini; i<= fin; i++){
-			borderFloor.add(new Position(i,j));
-		}
-
-		ini = this.getRoomUpperRight().getY();
-		fin = this.getRoomBottomRight().getY();
-		j   = this.getRoomUpperRight().getX();
-		for(i = ini; i <= fin; i++){
-			borderFloor.add(new Position(j,i));
-		}
-
-		ini = this.getRoomBottomRight().getX();
-		fin = this.getRoomBottomLeft().getX();
-		j = this.getRoomBottomRight().getY();
-		for(i = ini; i >= fin; i--){
-			borderFloor.add(new Position(i,j));
-		}
-
-		ini = this.getRoomBottomLeft().getY();
-		fin = this.getRoomUpperLeft().getY();
-		j = this.getRoomBottomLeft().getX();
-		for(i = ini; i >= fin; i--){
-			borderFloor.add(new Position(j,i));
-		}
-
-		for (Position p : floorAndWallsUsed) {
-			for (Position p2 : borderFloor){
-				if( p.equals(p2)){
-					System.out.println("ERROR: Invalid room: overlaps.");
-					return true;
-				}
-			}
-		}
-		return false;
-	}*/
 
 	public ArrayList<Position> getFloor(){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
