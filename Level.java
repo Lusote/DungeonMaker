@@ -3,7 +3,6 @@ import java.util.Random;
 
 /*
 *	TODO:
-*		createRoom() Has to complete doors?
 */
 
 public class Level{
@@ -44,9 +43,9 @@ public class Level{
 					this.floorAndWallsTiles.add(p);					
 				}
 				int startX = r.getRoomUpperLeft().getX();
-				int endX = r.getRoomBottomRight().getX();
+				int endX   = r.getRoomBottomRight().getX();
 				int startY = r.getRoomUpperLeft().getY();
-				int endY = r.getRoomBottomRight().getY();
+				int endY   = r.getRoomBottomRight().getY();
 				Tile t;
 				for(int i = startX; i<=endX; i++){
 					for(int j=startY; j<=endY; j++){

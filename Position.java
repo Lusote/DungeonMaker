@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 public class Position{
 
 	private int i;
@@ -68,6 +68,13 @@ public class Position{
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isPositionUsed(Set<Position> posUsed){
+		if(posUsed.contains(this)){
+			return true;
+		}
+		else return false;
 	}
 
 	public ArrayList<Position> getFourNeighbours(){
