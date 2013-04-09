@@ -3,6 +3,13 @@ import java.util.Random;
 
 /*
 *	TODO:
+*		With corridors it shall work like this:
+*			1.- Create Room
+*			2.- Connect with previous room (if any)
+*				2.1.- If it can't, delete room and previous room. 
+*				2.2.- GOTO 1
+*			3.- Repeat until we have X rooms.
+*			4.- Connect last room with first room.
 */
 
 public class Level{

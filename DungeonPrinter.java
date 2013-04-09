@@ -63,7 +63,7 @@ public class DungeonPrinter{
 				testDungeon.getLevel(0).createRoom();
 			}
 			if(dir.isRightArrow()){
-				while(testDungeon.getLevel(0).getNumRooms()!=10){
+				while(testDungeon.getLevel(0).getNumRooms()!=13){
 					testDungeon.getLevel(0).createRoom();
 				}
 			}

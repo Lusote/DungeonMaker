@@ -2,7 +2,6 @@ import java.util.*;
    
 /*
 *	TODO:
-*		addWalls(): I need a more efficient way to do that.
 */
 
 public class Room{
