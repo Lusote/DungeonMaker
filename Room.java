@@ -20,15 +20,38 @@ public class Room{
 		this.bottomRight = bR;
 		this.bottomLeft = new Position(uL.getX(),bR.getY());
 		this.upRight = new Position(bR.getX(),uL.getY());
-		this.doors = addDoors(this.upLeft.getSquare(bottomRight));
-		this.walls = addWalls();
+		this.doors = addDoors(this.upLeft.getPositionNW().getSquare(bottomRight.getPositionSE()));
+		this.walls = addWalls(this.doors, uL, bR);
 	}
 
-	public ArrayList<Position> addWalls(){
+	public ArrayList<Position> addWalls(ArrayList<Position> doors, Position uL, Position bR){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		toReturn.addAll(this.upLeft.getSquare(bottomRight));
-		for(Position p : this.getDoors()){
+		toReturn.addAll(this.upLeft.getPositionNW().getSquare(bottomRight.getPositionSE()));
+		for(Position p : doors){
 			toReturn.addAll(p.getEightNeighbours());
+		}
+		// Now we're goinng to get the neighbours of one position further than the door.
+		ArrayList<Position> floor = uL.getSquare(bR);
+		for(Position p : doors){
+			if(floor.contains(p.getPositionN())){
+				toReturn.addAll(p.getPositionS().getEightNeighbours());
+			}
+			if(floor.contains(p.getPositionS())){
+				toReturn.addAll(p.getPositionN().getEightNeighbours());
+			}
+			if(floor.contains(p.getPositionE())){
+				toReturn.addAll(p.getPositionW().getEightNeighbours());
+			}
+			if(floor.contains(p.getPositionW())){
+				toReturn.addAll(p.getPositionE().getEightNeighbours());
+			}
+		}	
+		// Now we're going to remove the pieces of floor from toReturn
+		for(Position f : floor){
+			if(toReturn.contains(f)){
+				System.out.println("Cleaning walls...");
+				toReturn.remove(f);
+			}
 		}
 		return toReturn;
 	}

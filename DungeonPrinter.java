@@ -81,6 +81,13 @@ public class DungeonPrinter{
 					for(Tile t : walls1){
 						t.setSymbol('#');
 					}
+					ArrayList<Tile> doorsTiles = new ArrayList<Tile>();
+					for(Position p: r.getDoors()){
+						doorsTiles.add(testDungeon.getLevel(0).getTile(p));
+					}
+					for(Tile t : doorsTiles){
+						t.setSymbol('d');
+					}
 				}
 			}
 			if(dir.isRightArrow()){
