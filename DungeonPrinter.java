@@ -2,8 +2,7 @@ import net.slashie.libjcsi.CSIColor;
 import net.slashie.libjcsi.CharKey;
 import net.slashie.libjcsi.ConsoleSystemInterface;
 import net.slashie.libjcsi.wswing.WSwingConsoleInterface;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 public class DungeonPrinter{
 
@@ -61,6 +60,28 @@ public class DungeonPrinter{
 			}
 			if(dir.isLeftArrow()){
 				testDungeon.getLevel(0).createRoom();
+			}
+			if(dir.isUpArrow()){
+				for(Room r : testDungeon.getLevel(0).getRooms()){
+					ArrayList<Tile> walls1 = new ArrayList<Tile>();
+					for(Position p: r.getWalls()){
+						walls1.add(testDungeon.getLevel(0).getTile(p));
+					}
+					for(Tile t : walls1){
+						t.setSymbol('%');
+					}
+				}
+			}
+			if(dir.isDownArrow()){
+				for(Room r : testDungeon.getLevel(0).getRooms()){
+					ArrayList<Tile> walls1 = new ArrayList<Tile>();
+					for(Position p: r.getWalls()){
+						walls1.add(testDungeon.getLevel(0).getTile(p));
+					}
+					for(Tile t : walls1){
+						t.setSymbol('#');
+					}
+				}
 			}
 			if(dir.isRightArrow()){
 				while(testDungeon.getLevel(0).getNumRooms()!=13){
