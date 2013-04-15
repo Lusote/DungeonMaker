@@ -15,45 +15,14 @@ public class Room{
 	private ArrayList<Position> walls = new ArrayList<Position>();
 
 
-	public Room(Position uL, Position bR, int gridH, int gridW){
+	public Room(Position uL, Position bR){
 		this.upLeft  = uL;
 		this.bottomRight = bR;
 		this.bottomLeft = new Position(uL.getX(),bR.getY());
 		this.upRight = new Position(bR.getX(),uL.getY());
-		this.doors = addDoors(this.upLeft.getPositionNW().getSquare(bottomRight.getPositionSE()));
-		this.walls = addWalls(this.doors, uL, bR);
-	}
-
-	public ArrayList<Position> addWalls(ArrayList<Position> doors, Position uL, Position bR){
-		ArrayList<Position> toReturn = new ArrayList<Position>();
-		toReturn.addAll(this.upLeft.getPositionNW().getSquare(bottomRight.getPositionSE()));
-		for(Position p : doors){
-			toReturn.addAll(p.getEightNeighbours());
-		}
-		// Now we're goinng to get the neighbours of one position further than the door.
-		ArrayList<Position> floor = uL.getSquare(bR);
-		for(Position p : doors){
-			if(floor.contains(p.getPositionN())){
-				toReturn.addAll(p.getPositionS().getEightNeighbours());
-			}
-			if(floor.contains(p.getPositionS())){
-				toReturn.addAll(p.getPositionN().getEightNeighbours());
-			}
-			if(floor.contains(p.getPositionE())){
-				toReturn.addAll(p.getPositionW().getEightNeighbours());
-			}
-			if(floor.contains(p.getPositionW())){
-				toReturn.addAll(p.getPositionE().getEightNeighbours());
-			}
-		}	
-		// Now we're going to remove the pieces of floor from toReturn
-		for(Position f : floor){
-			if(toReturn.contains(f)){
-				System.out.println("Cleaning walls...");
-				toReturn.remove(f);
-			}
-		}
-		return toReturn;
+		this.walls = uL.getPositionNW().getSquare(bR.getPositionSE());
+		//addDoors() adds to this.walls the tiles needed
+		this.doors = addDoors(this.walls);
 	}
 
 	public ArrayList<Position> addDoors(ArrayList<Position> walls){
@@ -80,10 +49,10 @@ public class Room{
 				else{
 					// Avoids having two doors together.
 					p2 = toReturn.get(0);
-					if(!p2.getFourNeighbours().contains(p) && walls.get(randomIndex)!=p2){
-						if(walls.get(randomIndex).isValidPositionForDoor()){
+					if(!p2.getFourNeighbours().contains(p) && p!=p2){
+						if(p.isValidPositionForDoor()){
 							//System.out.println("We got a second door.");
-							toReturn.add(walls.get(randomIndex));
+							toReturn.add(p);
 						}
 					}
 				}
@@ -95,17 +64,14 @@ public class Room{
 
 	public ArrayList<Position> getFloor(){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		int startX = this.getRoomUpperLeft().getX();
-		int endX   = this.getRoomBottomRight().getX();
-		int startY = this.getRoomUpperLeft().getY();
-		int endY   = this.getRoomBottomRight().getY();
-		Tile t;
-		for(int i = startX; i<=endX; i++){
-			for(int j=startY; j<=endY; j++){
-				toReturn.add(new Position(i,j));
-			}
-		}
+		System.out.println("Room.getFloor calling getSolidSquare");
+		toReturn.addAll(this.getRoomUpperLeft().getSolidSquare(this.getRoomBottomRight()));
 		return toReturn;
+	}
+
+	public void addWallPosition(Position p){
+		ArrayList<Position> walls = this.getWalls();
+		walls.add(p);
 	}
 
 	public ArrayList<Position> getWalls(){

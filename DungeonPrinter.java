@@ -25,8 +25,6 @@ public class DungeonPrinter{
 		 		csi.print(p.getX(),p.getY(),charToPrint,CSIColor.WHITE);
 			}
  	 	}
- 	 	
-
 	}
 
 	public static void main(String[] args){

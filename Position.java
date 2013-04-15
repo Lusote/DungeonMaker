@@ -101,10 +101,13 @@ public class Position{
 
 	public ArrayList<Position> getSolidSquare(Position bR){
 		Position uL = this;
+		int numtile=0;
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 		for(int i = uL.getX(); i <= bR.getX(); i++){
 			for(int j = uL.getY(); j <= bR.getY();j ++){
 				toReturn.add(new Position(i,j));
+		//		System.out.println("Adding SolidSquare "+numtile+": "+i+", "+j);
+				numtile++;
 			}
 		}
 		return toReturn;
@@ -120,35 +123,35 @@ public class Position{
 		Position uR = new Position(bR.getX(), uL.getY());
 		Position bL = new Position(uL.getX(), bR.getY());
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		ini = uL.getPositionNW().getX();
-		fin = uR.getPositionNE().getX();
-		j = uL.getPositionNW().getY();
+		ini = uL.getX();
+		fin = uR.getX();
+		j = uL.getY();
 		for(i = ini; i <= fin ; i++){
-			//System.out.println("Adding square "+numWalls+": "+i+", "+j);
+	//		System.out.println("Adding square "+numWalls+": "+i+", "+j);
 			numWalls++;
 			toReturn.add(new Position(i,j));
 		}
-		ini = uR.getPositionE().getY();
-		fin = bR.getPositionSE().getY();
-		j = uR.getPositionE().getX();
+		ini = uR.getY();
+		fin = bR.getY();
+		j = uR.getX();
 		for(i = ini; i <= fin; i++){
-			//System.out.println("Adding square "+numWalls+": "+j+", "+i);
+	//		System.out.println("Adding square "+numWalls+": "+j+", "+i);
 			numWalls++;
 			toReturn.add(new Position(j,i));
 		}
-		ini = bR.getPositionS().getX();
-		fin = bL.getPositionSW().getX();
-		j = bR.getPositionS().getY();
+		ini = bR.getX();
+		fin = bL.getX();
+		j = bR.getY();
 		for(i = ini; i >= fin; i--){
-			//System.out.println("Adding square "+numWalls+": "+i+", "+j);
+	//		System.out.println("Adding square "+numWalls+": "+i+", "+j);
 			numWalls++;
 			toReturn.add(new Position(i,j));
 		}
-		ini = bL.getPositionW().getY();
-		fin = uL.getPositionW().getY();
-		j = bL.getPositionW().getX();
+		ini = bL.getY();
+		fin = uL.getY();
+		j = bL.getX();
 		for(i = ini; i >= fin; i--){
-			//System.out.println("Adding square "+numWalls+": "+j+", "+i);
+	//		System.out.println("Adding square "+numWalls+": "+j+", "+i);
 			numWalls++;
 			toReturn.add(new Position(j,i));
 		}

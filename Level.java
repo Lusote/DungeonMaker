@@ -41,20 +41,23 @@ public class Level{
 
 	public Room createRoom(){
 		Tile t;
+		//int numFloor=0;
+		// Positions for room creation.
 		ArrayList<Position> roomPos = getRoomPositions();
+		// Now we check the tiles the room will use.
+		System.out.println("Level.createRoom calling getSolidSquare");
 		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE());
 		for(Position p : roomWallsAndFloor){
-			if(p.isPositionUsed(this.getRoomAndWallsPositions())
+			if(p.isPositionUsed(this.getFloorAndWallsPosition())
 				){
 				System.out.println("ERROR Creating Room: Position already used.");
 				return null;
 			}
 		}
 		// At this point, the Room is valid.
-		Room r = new Room(roomPos.get(0),roomPos.get(1), gridHeight, gridWidth);
+		Room r = new Room(roomPos.get(0),roomPos.get(1));
+		// We set the symbol on the floor tiles.
 		for(Position p : r.getFloor()){
-			//Removing possible duplicates due to addDoors()
-			r.getWalls().remove(p);
 			t = getTile(p);
 			if(t!=null){
 				t.setSymbol('.');
@@ -62,11 +65,13 @@ public class Level{
 				numFloor+": "+p.getX()+", "+p.getY());
 				numFloor++;*/
 				addFloorPosition(p);
-				addRoomOrWallsPosition(p);
+				addFloorOrWallsPosition(p);
 			}
 		}
+		// We add the tiles to the Sets
 		this.floorAndWallsPositions.addAll(r.getWalls());
 		this.floorAndWallsPositions.addAll(r.getDoors());
+		// Change the doors tiles symbols.
 		for(Position p : r.getDoors()){
 			this.getTile(p).setSymbol('.');
 		}
@@ -113,11 +118,11 @@ public class Level{
 		return this.rooms;
 	}	
 
-	public Set<Position> getRoomAndWallsPositions(){
+	public Set<Position> getFloorAndWallsPosition(){
 		return this.floorAndWallsPositions;
 	}
 
-	public void addRoomOrWallsPosition(Position p){
+	public void addFloorOrWallsPosition(Position p){
 		this.floorAndWallsPositions.add(p);
 	}
 
