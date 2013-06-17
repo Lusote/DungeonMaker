@@ -34,22 +34,22 @@ public class Room{
 			// Is valid and it's not a corner
 			//System.out.println("Checking for corners...");
 			if(p.isValidPositionForDoor()	  &&
-				(walls.contains(p.getPositionN()) &&
+				((walls.contains(p.getPositionN()) &&
 				 walls.contains(p.getPositionS())) 
 				||	
 				(walls.contains(p.getPositionE()) &&
-				 walls.contains(p.getPositionW()))				 
+				 walls.contains(p.getPositionW())))				 
 			  ){
 				if(toReturn.size()==0){
-					if(walls.get(randomIndex).isValidPositionForDoor()){
+					if(p.isValidPositionForDoor()){
 						//System.out.println("We got a first door.");
-						toReturn.add(walls.get(randomIndex));
+						toReturn.add(p);
 					}
 				}
 				else{
 					// Avoids having two doors together.
 					p2 = toReturn.get(0);
-					if(!p2.getFourNeighbours().contains(p) && p!=p2){
+					if(!p2.getNeighbours(4).contains(p) && p!=p2){
 						if(p.isValidPositionForDoor()){
 							//System.out.println("We got a second door.");
 							toReturn.add(p);
@@ -64,7 +64,7 @@ public class Room{
 
 	public ArrayList<Position> getFloor(){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		System.out.println("Room.getFloor calling getSolidSquare");
+		//System.out.println("Room.getFloor calling getSolidSquare");
 		toReturn.addAll(this.getRoomUpperLeft().getSolidSquare(this.getRoomBottomRight()));
 		return toReturn;
 	}

@@ -2,15 +2,13 @@ import java.util.ArrayList;
 
 /*
 *	TODO:
-*		Another constructor, complete, if possible.
-*		Test getNeighbours.
-*		Validtile: adapt methods to Position methods
 */
 
 public class Tile{
 
 	private boolean isExplored;
 	private boolean isOnview;
+	private boolean isWalkable;
 	private ArrayList<Object> thingsOnTile; 
 	private int distStairsUp;
 	private int distStairsDown;
@@ -28,11 +26,12 @@ public class Tile{
 		this.symbol = 'E';
 		this.pos = null;
 		this.level = 0;
+		this.isWalkable = true;
 	}
 
 	// The actual constructor.
 	public Tile(boolean explored, boolean view, ArrayList<Object> things,
-				int distDown, int distUp, char symb, Position p, int lev){
+				int distDown, int distUp, char symb, Position p, int lev, boolean walkable){
 		this.isExplored = explored;
 		this.isOnview = view;
 		this.thingsOnTile = new ArrayList<Object>();
@@ -41,6 +40,7 @@ public class Tile{
 		this.symbol = symb;
 		this.pos = p;
 		this.level = lev;
+		this.isWalkable = walkable;
 	}
 
 	public Position getPosition(){
@@ -101,6 +101,14 @@ public class Tile{
 
 	public void setDistStairsDown(int dist){
 		this.distStairsDown = dist;
+	}
+	
+	public boolean getIsWalkable(){
+		return this.isWalkable;
+	}
+
+	public void setWalkable(boolean walk){
+		this.isWalkable=walk;
 	}
 
 }

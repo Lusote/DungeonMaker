@@ -45,7 +45,7 @@ public class Level{
 		// Positions for room creation.
 		ArrayList<Position> roomPos = getRoomPositions();
 		// Now we check the tiles the room will use.
-		System.out.println("Level.createRoom calling getSolidSquare");
+		//System.out.println("Level.createRoom calling getSolidSquare");
 		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE());
 		for(Position p : roomWallsAndFloor){
 			if(p.isPositionUsed(this.getFloorAndWallsPosition())
@@ -71,9 +71,12 @@ public class Level{
 		// We add the tiles to the Sets
 		this.floorAndWallsPositions.addAll(r.getWalls());
 		this.floorAndWallsPositions.addAll(r.getDoors());
+		for(Position p : r.getWalls()){
+			this.getTile(p).setSymbol('W');
+		}
 		// Change the doors tiles symbols.
 		for(Position p : r.getDoors()){
-			this.getTile(p).setSymbol('.');
+			this.getTile(p).setSymbol('d');
 		}
 		addRoom(r);
 		return r;
@@ -138,6 +141,26 @@ public class Level{
 		return this.grid[p.getX()][p.getY()];
 	}
 
+/*	public ArrayList<Tile> getTileFourNeighbours(Tile t){
+		Position p = t.getPosition();
+		ArrayList<Tile> toReturn = new ArrayList<Tile>();
+		for(Position pos : p.getFourNeighbours()){
+			if(pos.isValidPosition())
+				toReturn.add(getTile(pos));
+		}
+		return toReturn;
+	}
+	
+	public ArrayList<Tile> getTileEightNeighbours(Tile t){
+		Position p = t.getPosition();
+		ArrayList<Tile> toReturn = new ArrayList<Tile>();
+		for(Position pos : p.getEightNeighbours()){
+			if(pos.isValidPosition())
+				toReturn.add(getTile(pos));
+		}
+		return toReturn;
+	}
+*/
 	public int getNumLevel(){
 		return this.index;
 	}

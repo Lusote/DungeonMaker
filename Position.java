@@ -77,25 +77,18 @@ public class Position{
 		else return false;
 	}
 
-	public ArrayList<Position> getFourNeighbours(){
+	public ArrayList<Position> getNeighbours(int numNeighbours){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
 		toReturn.add(this.getPositionN());
 		toReturn.add(this.getPositionS());
 		toReturn.add(this.getPositionE());
 		toReturn.add(this.getPositionW());
-		return toReturn;
-	}
-
-	public ArrayList<Position> getEightNeighbours(){
-		ArrayList<Position> toReturn = new ArrayList<Position>();
-		toReturn.add(this.getPositionN());
-		toReturn.add(this.getPositionS());
-		toReturn.add(this.getPositionE());
-		toReturn.add(this.getPositionW());
-		toReturn.add(this.getPositionNE());
-		toReturn.add(this.getPositionNW());
-		toReturn.add(this.getPositionSE());
-		toReturn.add(this.getPositionSW());
+		if(numNeighbours == 8){
+			toReturn.add(this.getPositionNE());
+			toReturn.add(this.getPositionNW());
+			toReturn.add(this.getPositionSE());
+			toReturn.add(this.getPositionSW());
+		}
 		return toReturn;
 	}
 
@@ -114,6 +107,12 @@ public class Position{
 	}
 
 	public ArrayList<Position> getSquare(Position bR){
+		ArrayList<Position> toReturn = this.getSolidSquare(bR);
+		ArrayList<Position> toRemove = this.getPositionSE().getSolidSquare(bR.getPositionNW());
+		toReturn.removeAll(toRemove);
+		return toReturn;
+/*		
+	Probably more efficient, but unreadable and undebuggable.
 		int i;
 		int ini;
 		int fin;
@@ -156,6 +155,7 @@ public class Position{
 			toReturn.add(new Position(j,i));
 		}
 		return toReturn;
+*/		
 	}
 
 	public Position getPositionNW(){

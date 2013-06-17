@@ -60,7 +60,7 @@ public class DungeonPrinter{
 				testDungeon.getLevel(0).createRoom();
 			}
 			if(dir.isUpArrow()){
-				for(Room r : testDungeon.getLevel(0).getRooms()){
+				/*for(Room r : testDungeon.getLevel(0).getRooms()){
 					ArrayList<Tile> walls1 = new ArrayList<Tile>();
 					for(Position p: r.getWalls()){
 						walls1.add(testDungeon.getLevel(0).getTile(p));
@@ -68,25 +68,22 @@ public class DungeonPrinter{
 					for(Tile t : walls1){
 						t.setSymbol('%');
 					}
-				}
+				}*/
 			}
 			if(dir.isDownArrow()){
-				for(Room r : testDungeon.getLevel(0).getRooms()){
+				/*for(Room r : testDungeon.getLevel(0).getRooms()){
 					ArrayList<Tile> walls1 = new ArrayList<Tile>();
 					for(Position p: r.getWalls()){
 						walls1.add(testDungeon.getLevel(0).getTile(p));
 					}
-					for(Tile t : walls1){
+					/*for(Tile t : walls1){
 						t.setSymbol('#');
-					}
+					}/
 					ArrayList<Tile> doorsTiles = new ArrayList<Tile>();
 					for(Position p: r.getDoors()){
 						doorsTiles.add(testDungeon.getLevel(0).getTile(p));
 					}
-					for(Tile t : doorsTiles){
-						t.setSymbol('d');
-					}
-				}
+				}*/
 			}
 			if(dir.isRightArrow()){
 				while(testDungeon.getLevel(0).getNumRooms()!=13){
