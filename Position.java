@@ -23,10 +23,11 @@ public class Position{
 	public boolean equals(Object other){
 	    if (other == null) return false;
     	if (other == this) return true;
-	    if (!(other instanceof Position))return false;
+	    if (!(other instanceof Position))
+	    	return false;
 	    Position another = (Position)other;
 	    if ((another.getX() == this.getX()) && (another.getY() == this.getY())) 
-        return true;
+        	return true;
 	    else return false;
 	}
 
@@ -77,17 +78,17 @@ public class Position{
 		else return false;
 	}
 
-	public ArrayList<Position> getNeighbours(int numNeighbours){
+	public ArrayList<Position> getNeighbors(int numNeighbors){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		toReturn.add(this.getPositionN());
-		toReturn.add(this.getPositionS());
-		toReturn.add(this.getPositionE());
-		toReturn.add(this.getPositionW());
-		if(numNeighbours == 8){
-			toReturn.add(this.getPositionNE());
-			toReturn.add(this.getPositionNW());
-			toReturn.add(this.getPositionSE());
-			toReturn.add(this.getPositionSW());
+		if(this.getPositionN().isValidPosition()) toReturn.add(this.getPositionN());
+		if(this.getPositionS().isValidPosition()) toReturn.add(this.getPositionS());
+		if(this.getPositionE().isValidPosition()) toReturn.add(this.getPositionE());
+		if(this.getPositionW().isValidPosition()) toReturn.add(this.getPositionW());
+		if(numNeighbors == 8){
+			if(this.getPositionNE().isValidPosition()) toReturn.add(this.getPositionNE());
+			if(this.getPositionNW().isValidPosition()) toReturn.add(this.getPositionNW());
+			if(this.getPositionSE().isValidPosition()) toReturn.add(this.getPositionSE());
+			if(this.getPositionSW().isValidPosition()) toReturn.add(this.getPositionSW());
 		}
 		return toReturn;
 	}

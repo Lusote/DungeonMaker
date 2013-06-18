@@ -19,8 +19,8 @@ public class Level{
 	private int gridWidth;
 	private Tile[][] grid; 
 	private ArrayList<Room> rooms;
-	private Set<Position> floorPositions;
-	private Set<Position> floorAndWallsPositions;
+	private HashSet<Position> floorPositions;
+	private HashSet<Position> floorAndWallsPositions;
     private static Random randomGenerator = new Random();
 
 
@@ -41,15 +41,14 @@ public class Level{
 
 	public Room createRoom(){
 		Tile t;
-		//int numFloor=0;
 		// Positions for room creation.
 		ArrayList<Position> roomPos = getRoomPositions();
 		// Now we check the tiles the room will use.
-		//System.out.println("Level.createRoom calling getSolidSquare");
-		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE());
+		// roomWallsAndFloor is the room plus two extra tiles on every direction
+		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE().getPositionSE());
 		for(Position p : roomWallsAndFloor){
-			if(p.isPositionUsed(this.getFloorAndWallsPosition())
-				){
+			// Checks with ALL the positions used on the level.
+			if(this.getFloorAndWallsPosition().contains(p)){
 				System.out.println("ERROR Creating Room: Position already used.");
 				return null;
 			}
@@ -61,9 +60,6 @@ public class Level{
 			t = getTile(p);
 			if(t!=null){
 				t.setSymbol('.');
-				/*System.out.println("Adding to floorTiles "+
-				numFloor+": "+p.getX()+", "+p.getY());
-				numFloor++;*/
 				addFloorPosition(p);
 				addFloorOrWallsPosition(p);
 			}
@@ -121,7 +117,7 @@ public class Level{
 		return this.rooms;
 	}	
 
-	public Set<Position> getFloorAndWallsPosition(){
+	public HashSet<Position> getFloorAndWallsPosition(){
 		return this.floorAndWallsPositions;
 	}
 
@@ -129,7 +125,7 @@ public class Level{
 		this.floorAndWallsPositions.add(p);
 	}
 
-	public Set<Position> getFloorPositions(){
+	public HashSet<Position> getFloorPositions(){
 		return this.floorPositions;
 	}
 

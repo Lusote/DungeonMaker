@@ -42,16 +42,14 @@ public class Room{
 			  ){
 				if(toReturn.size()==0){
 					if(p.isValidPositionForDoor()){
-						//System.out.println("We got a first door.");
 						toReturn.add(p);
 					}
 				}
 				else{
 					// Avoids having two doors together.
 					p2 = toReturn.get(0);
-					if(!p2.getNeighbours(4).contains(p) && p!=p2){
+					if(!p2.getNeighbors(4).contains(p) && p!=p2){
 						if(p.isValidPositionForDoor()){
-							//System.out.println("We got a second door.");
 							toReturn.add(p);
 						}
 					}
@@ -64,7 +62,6 @@ public class Room{
 
 	public ArrayList<Position> getFloor(){
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		//System.out.println("Room.getFloor calling getSolidSquare");
 		toReturn.addAll(this.getRoomUpperLeft().getSolidSquare(this.getRoomBottomRight()));
 		return toReturn;
 	}

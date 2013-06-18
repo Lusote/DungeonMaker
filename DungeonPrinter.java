@@ -17,7 +17,7 @@ public class DungeonPrinter{
 		char charToPrint;
 		Tile tileToPrint;
 		Position p;
-		 for(int i=0;i<=dunWidth;i++){
+		for(int i=0;i<=dunWidth;i++){
 		 	for(int j=0;j<=dunHeight;j++){
 		 		p = new Position(i,j);
 		 		tileToPrint = levelToPrint.getTile(p);
@@ -54,21 +54,40 @@ public class DungeonPrinter{
 					stop = true;
 			}
 			if(dir.code == CharKey.i){
-					System.out.println("Initializing... Not really.");
+					System.out.println("BEHOLD THE WALLS!!!!");
+					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+					for(Position p : walls){
+						testDungeon.getLevel(0).getTile(p).setSymbol('@');
+					}
 			}
 			if(dir.isLeftArrow()){
 				testDungeon.getLevel(0).createRoom();
 			}
-			if(dir.isUpArrow()){
-				/*for(Room r : testDungeon.getLevel(0).getRooms()){
-					ArrayList<Tile> walls1 = new ArrayList<Tile>();
-					for(Position p: r.getWalls()){
-						walls1.add(testDungeon.getLevel(0).getTile(p));
+			if(dir.isUpArrow()){				
+				if(testDungeon.getLevel(0).getNumRooms() == 2 ){
+					Position start = testDungeon.getLevel(0).getRooms().get(0).getDoors().get(1);
+					testDungeon.getLevel(0).getTile(start).setSymbol('S');
+					Position end = 	testDungeon.getLevel(0).getRooms().get(1).getDoors().get(0);
+					testDungeon.getLevel(0).getTile(end).setSymbol('E');
+					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
+					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+					ArrayList<Position> path = Astar.getPath(start, end, 4, walls);
+					System.out.println("WE NEVER REACH THIS!");
+					System.out.println("oops, we do.");
+					for(Position p : path){
+						System.out.println("We got a p from path.");
+						tilesPath.add(testDungeon.getLevel(0).getTile(p));
 					}
-					for(Tile t : walls1){
-						t.setSymbol('%');
-					}
-				}*/
+					for(Tile t : tilesPath) t.setSymbol('&');
+				}
+				if(testDungeon.getLevel(0).getNumRooms() == 1 ){
+					System.out.println("Creating second room.");
+					testDungeon.getLevel(0).createRoom();
+				}
+				if(testDungeon.getLevel(0).getNumRooms() == 0){
+					System.out.println("Creating first room.");
+					testDungeon.getLevel(0).createRoom();
+				}
 			}
 			if(dir.isDownArrow()){
 				/*for(Room r : testDungeon.getLevel(0).getRooms()){
