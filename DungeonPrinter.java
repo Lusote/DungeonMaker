@@ -64,28 +64,26 @@ public class DungeonPrinter{
 				testDungeon.getLevel(0).createRoom();
 			}
 			if(dir.isUpArrow()){				
-				if(testDungeon.getLevel(0).getNumRooms() == 2 ){
+				if(testDungeon.getLevel(0).getNumRooms() >= 2 ){
 					Position start = testDungeon.getLevel(0).getRooms().get(0).getDoors().get(1);
-					testDungeon.getLevel(0).getTile(start).setSymbol('S');
+					testDungeon.getLevel(0).getTile(start).setSymbol('.');
 					Position end = 	testDungeon.getLevel(0).getRooms().get(1).getDoors().get(0);
-					testDungeon.getLevel(0).getTile(end).setSymbol('E');
+					testDungeon.getLevel(0).getTile(end).setSymbol('.');
 					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
 					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+					walls.remove(end);
 					ArrayList<Position> path = Astar.getPath(start, end, 4, walls);
-					System.out.println("WE NEVER REACH THIS!");
-					System.out.println("oops, we do.");
-					for(Position p : path){
-						System.out.println("We got a p from path.");
-						tilesPath.add(testDungeon.getLevel(0).getTile(p));
+					if(path!= null){
+						for(Position p : path){
+							tilesPath.add(testDungeon.getLevel(0).getTile(p));
+						}
+						for(Tile t : tilesPath) t.setSymbol('.');
 					}
-					for(Tile t : tilesPath) t.setSymbol('&');
 				}
 				if(testDungeon.getLevel(0).getNumRooms() == 1 ){
-					System.out.println("Creating second room.");
 					testDungeon.getLevel(0).createRoom();
 				}
 				if(testDungeon.getLevel(0).getNumRooms() == 0){
-					System.out.println("Creating first room.");
 					testDungeon.getLevel(0).createRoom();
 				}
 			}

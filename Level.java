@@ -66,7 +66,7 @@ public class Level{
 		}
 		// We add the tiles to the Sets
 		this.floorAndWallsPositions.addAll(r.getWalls());
-		this.floorAndWallsPositions.addAll(r.getDoors());
+	//	this.floorAndWallsPositions.addAll(r.getDoors());
 		for(Position p : r.getWalls()){
 			this.getTile(p).setSymbol('W');
 		}
