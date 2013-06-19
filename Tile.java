@@ -10,8 +10,6 @@ public class Tile{
 	private boolean isOnview;
 	private boolean isWalkable;
 	private ArrayList<Object> thingsOnTile; 
-	private int distStairsUp;
-	private int distStairsDown;
 	private char symbol;
 	private Position pos;
 	private int level;
@@ -21,8 +19,6 @@ public class Tile{
 		this.isExplored = false;
 		this.isOnview = false;
 		this.thingsOnTile = new ArrayList<Object>();
-		this.distStairsDown = 0;
-		this.distStairsUp = 0;
 		this.symbol = 'E';
 		this.pos = null;
 		this.level = 0;
@@ -31,12 +27,10 @@ public class Tile{
 
 	// The actual constructor.
 	public Tile(boolean explored, boolean view, ArrayList<Object> things,
-				int distDown, int distUp, char symb, Position p, int lev, boolean walkable){
+				 char symb, Position p, int lev, boolean walkable){
 		this.isExplored = explored;
 		this.isOnview = view;
 		this.thingsOnTile = new ArrayList<Object>();
-		this.distStairsDown = distDown;
-		this.distStairsUp = distUp;
 		this.symbol = symb;
 		this.pos = p;
 		this.level = lev;
@@ -85,22 +79,6 @@ public class Tile{
 
 	public boolean isTileEmpty(){
 		return this.thingsOnTile.isEmpty();
-	}
-
-	public int getDistStairsUp(){
-		return this.distStairsUp;
-	}
-
-	public void setDistStairsUp(int dist){
-		this.distStairsUp = dist;
-	}
-
-	public int getDistStairsDown(){
-		return this.distStairsDown;
-	}
-
-	public void setDistStairsDown(int dist){
-		this.distStairsDown = dist;
 	}
 	
 	public boolean getIsWalkable(){

@@ -137,55 +137,37 @@ public class Level{
 		return this.grid[p.getX()][p.getY()];
 	}
 
-/*	public ArrayList<Tile> getTileFourNeighbours(Tile t){
-		Position p = t.getPosition();
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		for(Position pos : p.getFourNeighbours()){
-			if(pos.isValidPosition())
-				toReturn.add(getTile(pos));
-		}
-		return toReturn;
-	}
-	
-	public ArrayList<Tile> getTileEightNeighbours(Tile t){
-		Position p = t.getPosition();
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		for(Position pos : p.getEightNeighbours()){
-			if(pos.isValidPosition())
-				toReturn.add(getTile(pos));
-		}
-		return toReturn;
-	}
-*/
 	public int getNumLevel(){
 		return this.index;
 	}
 
 	// Gets a random empty floor Tile from floorTiles
-	public Position getRandomFloorPosition(Level l){
-		int size = l.getFloorPositions().size();
-		int item = new Random().nextInt(size);
-		int i = 0;
-		for(Position p : l.getFloorPositions()){
-			if (i == item){
-				if(!this.getTile(p).isTileEmpty()){
-					return p;
-				}
-				i=i++;
-			}
+	public Position getRandomFloorPosition(){
+		ArrayList<Position> tiles = new ArrayList<Position>(this.getFloorPositions());
+		int numPos = tiles.size();
+		int randomPos = randomGenerator.nextInt(numPos);
+		return tiles.get(randomPos);
+
+	/*	HashSet<Position> avaliablePos = this.getFloorPositions();
+		int numPos = avaliablePos.size();
+		int randomPos = randomGenerator.nextInt(numPos);
+		Iterator iter = avaliablePos.iterator();
+		int i=0;
+		while(iter.hasNext()){
+			if(i == randomPos) 
+				return (Position)iter.next();
+			i++;
 		}
-		return null;
-	 }
+		return null;*/
+	}
 
 	public void setStairsUp(){
-		Position stairsUp = this.getRandomFloorPosition(this);
-		this.getTile(stairsUp).setDistStairsUp(0);
+		Position stairsUp = this.getRandomFloorPosition();
 		this.getTile(stairsUp).setSymbol('<');
 	}
 
 	public void setStairsDown(){
-		Position stairsDown = this.getRandomFloorPosition(this);
-		this.getTile(stairsDown).setDistStairsUp(0);
+		Position stairsDown = this.getRandomFloorPosition();
 		this.getTile(stairsDown).setSymbol('>');
 	}
 

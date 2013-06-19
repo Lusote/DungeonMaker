@@ -17,6 +17,13 @@ public class DungeonPrinter{
 		char charToPrint;
 		Tile tileToPrint;
 		Position p;
+/*		for(int i = 0; i<=dunWidth+1;i++){
+			for(int j=0;j<=dunHeight+1;j++){
+				if(i==0 || j==0){
+					csi.print(i,j,i.toString(),CSIColor.WHITE);
+				}
+			}
+		}*/
 		for(int i=0;i<=dunWidth;i++){
 		 	for(int j=0;j<=dunHeight;j++){
 		 		p = new Position(i,j);
@@ -54,11 +61,8 @@ public class DungeonPrinter{
 					stop = true;
 			}
 			if(dir.code == CharKey.i){
-					System.out.println("BEHOLD THE WALLS!!!!");
-					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
-					for(Position p : walls){
-						testDungeon.getLevel(0).getTile(p).setSymbol('@');
-					}
+					testDungeon.getLevel(0).setStairsUp();
+					testDungeon.getLevel(0).setStairsDown();
 			}
 			if(dir.isLeftArrow()){
 				testDungeon.getLevel(0).createRoom();
