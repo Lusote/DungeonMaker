@@ -24,12 +24,24 @@ public class DungeonPrinter{
 				}
 			}
 		}*/
-		for(int i=0;i<=dunWidth;i++){
-		 	for(int j=0;j<=dunHeight;j++){
-		 		p = new Position(i,j);
-		 		tileToPrint = levelToPrint.getTile(p);
-		 		charToPrint = tileToPrint.getSymbol();
-		 		csi.print(p.getX(),p.getY(),charToPrint,CSIColor.WHITE);
+		for(int i=0;i<=dunWidth+1;i++){
+		 	for(int j=0;j<=dunHeight+1;j++){
+		 		if(i>=dunWidth+1){
+		 			int aux1 = j%10;
+		 			int aux2 = i%10;
+		 			csi.print(i,j, Character.forDigit(aux1, 10),CSIColor.RED);
+		 		}
+		 		if(j>=dunHeight+1){
+		 			int aux1 = j%10;
+		 			int aux2 = i%10;
+		 			csi.print(i,j, Character.forDigit(aux2, 10),CSIColor.RED);
+		 		}
+		 		if(i<=dunWidth && j<=dunHeight){	
+			 		p = new Position(i,j);
+			 		tileToPrint = levelToPrint.getTile(p);
+			 		charToPrint = tileToPrint.getSymbol();
+		 			csi.print(p.getX(),p.getY(),charToPrint,CSIColor.WHITE);
+		 		}
 			}
  	 	}
 	}
@@ -68,10 +80,32 @@ public class DungeonPrinter{
 				testDungeon.getLevel(0).createRoom();
 			}
 			if(dir.isUpArrow()){				
-				if(testDungeon.getLevel(0).getNumRooms() >= 2 ){
-					Position start = testDungeon.getLevel(0).getRooms().get(0).getDoors().get(1);
+				if(testDungeon.getLevel(0).getNumRooms() >= 6 ){
+
+					for(int i = 0; i < testDungeon.getLevel(0).getNumRooms()-1; i++){
+						Position start = testDungeon.getLevel(0).getRooms().get(i).getDoors().get(1);
+						testDungeon.getLevel(0).getTile(start).setSymbol('.');
+						Position end = 	testDungeon.getLevel(0).getRooms().get(i+1).getDoors().get(0);
+						testDungeon.getLevel(0).getTile(end).setSymbol('.');
+						ArrayList<Tile> tilesPath = new ArrayList<Tile>();
+						HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+						walls.remove(end);
+						ArrayList<Position> path = testDungeon.getLevel(0).getPath(start, end, 4);
+						if(path!= null){
+							for(Position p : path){
+								Tile t = testDungeon.getLevel(0).getTile(p);
+								t.setSymbol('.');
+								tilesPath.add(t);
+							}							
+							csi.cls();		
+							csi.refresh();
+							printDungeon(testDungeon,0,csi);
+						}
+					}
+
+					Position start = testDungeon.getLevel(0).getRooms().get(testDungeon.getLevel(0).getNumRooms()-1).getDoors().get(1);
 					testDungeon.getLevel(0).getTile(start).setSymbol('.');
-					Position end = 	testDungeon.getLevel(0).getRooms().get(1).getDoors().get(0);
+					Position end = 	testDungeon.getLevel(0).getRooms().get(0).getDoors().get(0);
 					testDungeon.getLevel(0).getTile(end).setSymbol('.');
 					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
 					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
@@ -85,10 +119,7 @@ public class DungeonPrinter{
 						}
 					}
 				}
-				if(testDungeon.getLevel(0).getNumRooms() == 1 ){
-					testDungeon.getLevel(0).createRoom();
-				}
-				if(testDungeon.getLevel(0).getNumRooms() == 0){
+				if(testDungeon.getLevel(0).getNumRooms() <6 ){
 					testDungeon.getLevel(0).createRoom();
 				}
 			}
@@ -108,7 +139,7 @@ public class DungeonPrinter{
 				}*/
 			}
 			if(dir.isRightArrow()){
-				while(testDungeon.getLevel(0).getNumRooms()!=8){
+				while(testDungeon.getLevel(0).getNumRooms()!=6){
 					testDungeon.getLevel(0).createRoom();
 				}
 			}
@@ -119,6 +150,62 @@ public class DungeonPrinter{
 			}
 			if(dir.code == CharKey.n){
 				testDungeon = new Dungeon();
+			}
+			if(dir.code == CharKey.c){
+				int numRooms = testDungeon.getLevel(0).getNumRooms();
+				if(numRooms == 0 ){
+					testDungeon.getLevel(0).createRoom();
+				}else if(numRooms > 0 && numRooms < 6 ){
+
+					try{
+					testDungeon.getLevel(0).createRoom();
+					Position start = testDungeon.getLevel(0).getRooms().get(numRooms-1).getDoors().get(1);
+					testDungeon.getLevel(0).getTile(start).setSymbol('.');
+					Position end = 	testDungeon.getLevel(0).getRooms().get(numRooms).getDoors().get(0);
+					testDungeon.getLevel(0).getTile(end).setSymbol('.');
+					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
+					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+					walls.remove(end);
+					ArrayList<Position> path = testDungeon.getLevel(0).getPath(start, end, 4);
+					if(path!= null){
+						for(Position p : path){
+							Tile t = testDungeon.getLevel(0).getTile(p);
+							t.setSymbol('.');
+							tilesPath.add(t);
+						}							
+						csi.cls();		
+						csi.refresh();
+						printDungeon(testDungeon,0,csi);
+					}
+					}catch(Exception e){
+						System.out.println("FATAL ERROR");
+						
+					}
+
+
+				}else if(numRooms == 6 ){
+
+
+					Position start = testDungeon.getLevel(0).getRooms().get(numRooms).getDoors().get(1);
+					testDungeon.getLevel(0).getTile(start).setSymbol('.');
+					Position end = 	testDungeon.getLevel(0).getRooms().get(0).getDoors().get(0);
+					testDungeon.getLevel(0).getTile(end).setSymbol('.');
+					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
+					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
+					walls.remove(end);
+					ArrayList<Position> path = testDungeon.getLevel(0).getPath(start, end, 4);
+					if(path!= null){
+						for(Position p : path){
+							Tile t = testDungeon.getLevel(0).getTile(p);
+							t.setSymbol('.');
+							tilesPath.add(t);
+						}							
+						csi.cls();		
+						csi.refresh();
+						printDungeon(testDungeon,0,csi);
+					}
+
+				}
 			}
 		}
 		System.exit(0);

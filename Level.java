@@ -42,18 +42,8 @@ public class Level{
 	public Room createRoom(){
 		Tile t;
 		// Positions for room creation.
-		ArrayList<Position> roomPos = getRoomPositions();
-		// Now we check the tiles the room will use.
-		// roomWallsAndFloor is the room plus two extra tiles on every direction
-		ArrayList<Position> roomWallsAndFloor  = roomPos.get(0).getPositionNW().getPositionNW().getPositionNW().getSolidSquare(roomPos.get(1).getPositionSE().getPositionSE().getPositionSE());
-		for(Position p : roomWallsAndFloor){
-			// Checks with ALL the positions used on the level.
-			if(this.getFloorAndWallsPosition().contains(p)){
-				System.out.println("ERROR Creating Room: Position already used.");
-				return null;
-			}
-		}
-		// At this point, the Room is valid.
+		HashSet<Position> used = this.getFloorAndWallsPosition();
+		ArrayList<Position> roomPos = this.getRoomPositions(used);
 		Room r = new Room(roomPos.get(0),roomPos.get(1));
 		// We set the symbol on the floor tiles.
 		for(Position p : r.getFloor()){
@@ -78,27 +68,54 @@ public class Level{
 		return r;
 	}
 
+	public void deleteRoom(int indexRoom){
+		Room toDelete = this.getRooms().get(indexRoom);
+		ArrayList<Position> floor = toDelete.getFloor();
+		ArrayList<Position> walls = toDelete.getWalls();
+		this.getFloorPositions().removeAll(floor);
+		this.getFloorAndWallsPosition().removeAll(floor);
+		this.getFloorAndWallsPosition().removeAll(walls);
+		this.getRooms().remove(indexRoom);
+	}
+
 	// Returns uL and bR
-	public ArrayList<Position> getRoomPositions(){
+	public ArrayList<Position> getRoomPositions(HashSet<Position> invalid){
+		boolean finded = false;
 		ArrayList<Position> toReturn = new ArrayList<Position>();
-		int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-		int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-		int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-		int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-		Position uL = new Position(randomIndexULX,randomIndexULY);
-		Position bR = new Position(randomIndexBRX, randomIndexBRY);
-		while(!uL.isValidPositionForRoom() ||
-			!bR.isValidPositionForRoom()){
-				randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
-				randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
-				randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
-				randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
-				uL = new Position(randomIndexULX,randomIndexULY);
-				bR = new Position(randomIndexBRX, randomIndexBRY);
+		while(!finded){
+			toReturn.clear();
+			int randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
+			int randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
+			int randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+			int randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+			Position uL = new Position(randomIndexULX,randomIndexULY);
+			Position bR = new Position(randomIndexBRX, randomIndexBRY);
+			while(!uL.isValidPositionForRoom() ||
+				!bR.isValidPositionForRoom()){
+					randomIndexULX = randomGenerator.nextInt(this.getGridWidth()-2)+1;
+					randomIndexULY = randomGenerator.nextInt(this.getGridHeight()-2)+1;
+					randomIndexBRX = randomIndexULX + randomGenerator.nextInt(6)+4;		
+					randomIndexBRY = randomIndexULY  + randomGenerator.nextInt(5)+2;
+					uL = new Position(randomIndexULX,randomIndexULY);
+					bR = new Position(randomIndexBRX, randomIndexBRY);
+			}
+			toReturn.add(uL);
+			toReturn.add(bR);
+
+			// Now we check the tiles the room will use.
+			// roomWallsAndFloor is the room plus two extra tiles on every direction
+			ArrayList<Position> roomWallsAndFloor  = uL.getPositionNW().getPositionNW().getPositionNW().getSolidSquare(bR.getPositionSE().getPositionSE().getPositionSE());
+			finded = true;
+			for(Position p : roomWallsAndFloor){
+				// Checks with ALL the positions used on the level.
+				if(invalid.contains(p)){
+					System.out.println("ERROR Creating Room: Position already used.");
+					finded = false;
+					break;
+				}
+			}
 		}
-		toReturn.add(uL);
-		toReturn.add(bR);
-		return toReturn;
+			return toReturn;
 	}
 
 	// Returns the path between two positions
@@ -110,16 +127,6 @@ public class Level{
 			this.getFloorAndWallsPosition().addAll(p.getNeighbors(8));
 		}
 		return toReturn;
-	}
-
-	public void createHoleInPath(ArrayList<Position> path){
-		if(path.size()<7) return;
-		ArrayList<Position> pathAndWalls = new ArrayList<Position>();
-		for(Position p : path){
-			pathAndWalls.addAll(p.getNeighbors(8));
-		}
-		Position pos = path.get(randomGenerator.nextInt(path.size()-4)+2);
-		this.getFloorAndWallsPosition().remove(pos.getNeighbors(4));
 	}
 
 	public void addRoom(Room r){
