@@ -101,6 +101,29 @@ public class Level{
 		return toReturn;
 	}
 
+	// Returns the path between two positions
+	public ArrayList<Position> getPath(Position start, Position end, int numNeighbors){
+		ArrayList<Position> toReturn = Astar.getPath(start, end, numNeighbors, 
+			this.getFloorAndWallsPosition());
+		for(Position p : toReturn){
+			this.addFloorPosition(p);
+			this.getFloorAndWallsPosition().addAll(p.getNeighbors(8));
+		}
+		return toReturn;
+	}
+/*
+	public void createHoleInPath(ArrayList path){
+		ArrayList<Position> toReturn = Astar.getPath(start, end, numNeighbors, 
+			this.getFloorAndWallsPositions());
+		ArrayList<Position> pathAndWalls = toReturn;
+		for(Position p : toReturn){
+			this.addFloorPosition(p);
+			pathAndWalls.add(p.getNeighbors(8));
+		}
+		pathAndWalls.removeAll(toReturn);
+
+	}*/
+
 	public void addRoom(Room r){
 		this.rooms.add(r);
 	}

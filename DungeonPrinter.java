@@ -76,12 +76,13 @@ public class DungeonPrinter{
 					ArrayList<Tile> tilesPath = new ArrayList<Tile>();
 					HashSet<Position> walls = testDungeon.getLevel(0).getFloorAndWallsPosition();
 					walls.remove(end);
-					ArrayList<Position> path = Astar.getPath(start, end, 4, walls);
+					ArrayList<Position> path = testDungeon.getLevel(0).getPath(start, end, 4);
 					if(path!= null){
 						for(Position p : path){
-							tilesPath.add(testDungeon.getLevel(0).getTile(p));
+							Tile t = testDungeon.getLevel(0).getTile(p);
+							t.setSymbol('.');
+							tilesPath.add(t);
 						}
-						for(Tile t : tilesPath) t.setSymbol('.');
 					}
 				}
 				if(testDungeon.getLevel(0).getNumRooms() == 1 ){
@@ -107,7 +108,7 @@ public class DungeonPrinter{
 				}*/
 			}
 			if(dir.isRightArrow()){
-				while(testDungeon.getLevel(0).getNumRooms()!=13){
+				while(testDungeon.getLevel(0).getNumRooms()!=8){
 					testDungeon.getLevel(0).createRoom();
 				}
 			}
