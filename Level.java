@@ -111,18 +111,16 @@ public class Level{
 		}
 		return toReturn;
 	}
-/*
-	public void createHoleInPath(ArrayList path){
-		ArrayList<Position> toReturn = Astar.getPath(start, end, numNeighbors, 
-			this.getFloorAndWallsPositions());
-		ArrayList<Position> pathAndWalls = toReturn;
-		for(Position p : toReturn){
-			this.addFloorPosition(p);
-			pathAndWalls.add(p.getNeighbors(8));
-		}
-		pathAndWalls.removeAll(toReturn);
 
-	}*/
+	public void createHoleInPath(ArrayList<Position> path){
+		if(path.size()<7) return;
+		ArrayList<Position> pathAndWalls = new ArrayList<Position>();
+		for(Position p : path){
+			pathAndWalls.addAll(p.getNeighbors(8));
+		}
+		Position pos = path.get(randomGenerator.nextInt(path.size()-4)+2);
+		this.getFloorAndWallsPosition().remove(pos.getNeighbors(4));
+	}
 
 	public void addRoom(Room r){
 		this.rooms.add(r);
