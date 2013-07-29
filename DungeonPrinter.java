@@ -155,7 +155,7 @@ public class DungeonPrinter{
 				int numRooms = testDungeon.getLevel(0).getNumRooms();
 				if(numRooms == 0 ){
 					testDungeon.getLevel(0).createRoom();
-				}else if(numRooms > 0 && numRooms < 6 ){
+				}else if(numRooms > 0 && numRooms < 4 ){
 
 					try{
 					testDungeon.getLevel(0).createRoom();
@@ -179,14 +179,17 @@ public class DungeonPrinter{
 					}
 					}catch(Exception e){
 						System.out.println("FATAL ERROR");
-						
+						testDungeon = new Dungeon();
+
 					}
 
 
-				}else if(numRooms == 6 ){
+				}else if(numRooms == 4 ){
+
+					try{
 
 
-					Position start = testDungeon.getLevel(0).getRooms().get(numRooms).getDoors().get(1);
+					Position start = testDungeon.getLevel(0).getRooms().get(numRooms-1).getDoors().get(1);
 					testDungeon.getLevel(0).getTile(start).setSymbol('.');
 					Position end = 	testDungeon.getLevel(0).getRooms().get(0).getDoors().get(0);
 					testDungeon.getLevel(0).getTile(end).setSymbol('.');
@@ -203,6 +206,11 @@ public class DungeonPrinter{
 						csi.cls();		
 						csi.refresh();
 						printDungeon(testDungeon,0,csi);
+					}
+					}catch(Exception e){
+						System.out.println("FATAL ERROR");
+						testDungeon = new Dungeon();
+
 					}
 
 				}

@@ -22,6 +22,8 @@ public class Level{
 	private HashSet<Position> floorPositions;
 	private HashSet<Position> floorAndWallsPositions;
     private static Random randomGenerator = new Random();
+    private Position stairsUp;
+    private Position stairsDown;
 
 
 	public Level(int ind, int gH, int gW){
@@ -37,6 +39,8 @@ public class Level{
 		 		this.grid[i][j] = new Tile();
 		 	}
 		 }
+		 this.stairsDown = null;
+		 this.stairsUp = null;
 	}
 
 	public Room createRoom(){
@@ -58,7 +62,7 @@ public class Level{
 		this.floorAndWallsPositions.addAll(r.getWalls());
 	//	this.floorAndWallsPositions.addAll(r.getDoors());
 		for(Position p : r.getWalls()){
-			this.getTile(p).setSymbol('W');
+			this.getTile(p).setSymbol('#');
 		}
 		// Change the doors tiles symbols.
 		for(Position p : r.getDoors()){
@@ -189,14 +193,28 @@ public class Level{
 		return null;*/
 	}
 
-	public void setStairsUp(){
-		Position stairsUp = this.getRandomFloorPosition();
-		this.getTile(stairsUp).setSymbol('<');
+	public Position getStairsUp(){
+		return this.stairsUp;
 	}
 
+	// Needs to check for used
+	public void setStairsUp(){
+		if(this.getStairsUp() == null){
+			Position stairsUp = this.getRandomFloorPosition();
+			this.getTile(stairsUp).setSymbol('<');
+		}
+	}
+
+	public Position getStairsDown(){
+		return this.stairsDown;
+	}
+
+	// Needs to check for used
 	public void setStairsDown(){
-		Position stairsDown = this.getRandomFloorPosition();
-		this.getTile(stairsDown).setSymbol('>');
+		if(this.getStairsDown() == null){
+			Position stairsDown = this.getRandomFloorPosition();
+			this.getTile(stairsDown).setSymbol('>');
+		}
 	}
 
 	public int getGridHeight(){
